@@ -1,0 +1,11 @@
+{
+  "name": "hermes",
+  "version": "1.0.0",
+  "description": "Client Application of Hermes project",
+  "main": "index.js",
+  "author": "Spec",
+  "private": true,
+  "scripts": {
+    
+  }
+}
