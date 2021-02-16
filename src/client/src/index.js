@@ -1,9 +1,17 @@
-function component() {
-  const element = document.createElement('div');
+import React from "react"
+import ReactDOM from "react-dom"
+import { Provider } from 'react-redux'
 
-  element.innerHTML = 'Hello'
+import './index.css'
+import App from "./App"
+import store from "./store"
 
-  return element;
+const root = document.getElementById("root")
+
+if (root) {
+    ReactDOM.render(
+        <Provider store={store}>
+            <App />
+        </Provider>,
+        root)
 }
-
-document.body.appendChild(component());
