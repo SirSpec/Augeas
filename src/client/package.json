@@ -5,7 +5,8 @@
   "author": "Spec",
   "private": true,
   "scripts": {
-    "dev": "webpack --config webpack.config.js --mode development"
+    "dev": "webpack --config webpack.config.js --mode development",
+    "server": "node server.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
