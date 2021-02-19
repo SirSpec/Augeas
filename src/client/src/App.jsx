@@ -1,10 +1,10 @@
 import React from 'react';
 
-import "./styles/global";
+import Playground from './components/Playground/Playground'
 
 const App = () => {
     return (
-        <div>Hermes</div>
+        <Playground />
     );
 };
 
