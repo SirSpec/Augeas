@@ -10,6 +10,7 @@ export default class PlaygroundService {
 
         this.green = '#00ff00';
         this.red = '#ff0000';
+        this.yellow = '#ffff00';
     }
 
     initialize() {
@@ -30,29 +31,11 @@ export default class PlaygroundService {
             }
         });
 
-        var collider = Matter.Bodies.rectangle(400, 300, 500, 50, {
-            isStatic: true,
-            render: {
-                strokeStyle: this.red,
-                fillStyle: 'transparent',
-                lineWidth: 1
-            }
-        });
-
         var car = this.createActor(150, 100);
+        this.createMap(engine.world);
+
 
         Matter.World.add(engine.world, car);
-
-        Matter.World.add(engine.world, [
-            collider,
-            Matter.Bodies.rectangle(400, this.playgroundHeight, this.playgroundWidth, 50, {
-                isStatic: true,
-                render: {
-                    fillStyle: '#060a19',
-                    lineWidth: 0
-                }
-            })
-        ]);
 
         Matter.Events.on(engine, 'collisionStart', event => {
             var pairs = event.pairs;
@@ -218,4 +201,52 @@ export default class PlaygroundService {
 
         return actor;
     };
+
+    createMap(world) {
+        Matter.World.add(world, [
+            this.placeWall(50, 10, 1400, 20),
+            this.placeWall(200, 150, 1300, 160),
+
+            this.placeWall(1400, 10, 1410, 800),
+            this.placeWall(1300, 150, 1310, 700),
+
+            this.placeWall(1000, 700, 1310, 710),
+            this.placeWall(850, 800, 1410, 810),
+
+            this.placeWall(850, 400, 860, 800),
+            this.placeWall(1000, 250, 1010, 700),
+
+            this.placeWall(500, 250, 1010, 260),
+            this.placeWall(650, 400, 860, 410),
+
+            this.placeWall(650, 400, 660, 800),
+            this.placeWall(500, 250, 510, 700),
+
+            this.placeWall(200, 700, 510, 710),
+            this.placeWall(50, 800, 660, 810),
+
+            this.placeWall(50, 10, 60, 800),
+            this.placeWall(200, 150, 210, 700),
+        ]);
+    };
+
+    placeWall(x1, y1, x2, y2) {
+        var vertices = [
+            { x: x1, y: y1 },
+            { x: x1, y: y2 },
+            { x: x2, y: y2 },
+            { x: x2, y: y1 }
+        ]
+
+        var body = Matter.Body.create({
+            position: Matter.Vertices.centre(vertices),
+            vertices: vertices,
+            isStatic: true,
+            render: {
+                fillStyle: this.yellow,
+                lineWidth: 0
+            },
+        });
+        return body;
+    }
 }
