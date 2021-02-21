@@ -1,4 +1,4 @@
-import Matter from 'matter-js'
+import Phaser from 'phaser'
 
 export default class PlaygroundService {
     constructor(playgroundViewRef, canvasRef, width, height) {
@@ -14,239 +14,128 @@ export default class PlaygroundService {
     }
 
     initialize() {
-        var runner = Matter.Runner.create();
-
-        var engine = Matter.Engine.create({
-            world: Matter.World.create({ gravity: { x: 0, y: 0 } })
-        });
-
-        var render = Matter.Render.create({
-            element: this.playgroundViewRef.current,
-            canvas: this.canvasRef.current,
-            engine: engine,
-            options: {
-                width: this.playgroundWidth,
-                height: this.playgroundHeight,
-                wireframes: false
-            }
-        });
-
-        var car = this.createActor(150, 100);
-        this.createMap(engine.world);
-
-
-        Matter.World.add(engine.world, car);
-
-        Matter.Events.on(engine, 'collisionStart', event => {
-            var pairs = event.pairs;
-
-            for (var i = 0, j = pairs.length; i != j; ++i) {
-                var pair = pairs[i];
-
-                // if (pair.bodyA === collider) {
-                pair.bodyB.render.fillStyle = this.red;
-                // } else if (pair.bodyB === collider) {
-                pair.bodyA.render.fillStyle = this.red;
-                // }
-            }
-        });
-
-        Matter.Events.on(engine, 'collisionEnd', event => {
-            var pairs = event.pairs;
-
-            for (var i = 0, j = pairs.length; i != j; ++i) {
-                var pair = pairs[i];
-
-                // if (pair.bodyA === collider) {
-                pair.bodyB.render.fillStyle = this.green;
-                // } else if (pair.bodyB === collider) {
-                pair.bodyA.render.fillStyle = this.green;
-                // }
-            }
-        });
-
         var keys = [];
 
-        document.body.addEventListener("keydown", function (e) {
-            keys[e.keyCode] = true;
-        });
-        document.body.addEventListener("keyup", function (e) {
-            keys[e.keyCode] = false;
+        document.body.addEventListener("keydown", (event) => {
+            keys[event.keyCode] = true;
         });
 
-        Matter.Events.on(engine, "beforeTick", function (event) {
-            if (keys[38]) {
-                Matter.Composite.translate(car, Matter.Vector.create(Math.cos(car.bodies[0].angle), Math.sin(car.bodies[0].angle)));
-
-            }
-            if (keys[37]) {
-                Matter.Composite.rotate(car, -Math.sin(0.01), {
-                    x: car.bodies[0].position.x,
-                    y: car.bodies[0].position.y
-                });
-            }
-            if (keys[39]) {
-                Matter.Composite.rotate(car, Math.sin(0.01), {
-                    x: car.bodies[0].position.x,
-                    y: car.bodies[0].position.y
-                });
-
-            }
-            if (keys[40]) {
-                Matter.Composite.translate(car, Matter.Vector.create(-Math.cos(car.bodies[0].angle), -Math.sin(car.bodies[0].angle)));
-                // Matter.Body.setVelocity(car, Matter.Vector.create(-Math.cos(car.bodies[0].angle), -Math.sin(car.bodies[0].angle)));
-            }
+        document.body.addEventListener("keyup", (event) => {
+            keys[event.keyCode] = false;
         });
 
-        Matter.Render.lookAt(render, {
-            min: { x: 0, y: 0 },
-            max: { x: this.playgroundWidth, y: this.playgroundHeight }
-        });
+        var config = {
+            width: this.playgroundWidth,
+            height: this.playgroundHeight,
+            type: Phaser.AUTO,
+            parent: 'playground',
+            scene: {
+                create: create,
+                update: update
+            }
+        };
 
-        Matter.Runner.run(runner, engine);
-        Matter.Engine.run(engine);
-        Matter.Render.run(render);
-    }
-
-    createActor(x, y) {
-        var actorSize = 20;
+        var x = 300;
+        var y = 300;
         var sensorWidth = 100;
-        var sensorHeight = 5;
 
-        var group = Matter.Body.nextGroup(true);
+        var rect;
 
-        var actor = Matter.Composite.create({ label: 'Actor' });
+        var graphics;
 
-        var body = Matter.Bodies.circle(x, y, actorSize, {
-            collisionFilter: {
-                group: group
-            },
-            // isStatic: true,
-            isSensor: true,
-            render: {
-                fillStyle: this.green,
-                lineWidth: 0
+        var actor;
+        var sensor1;
+        var sensor2;
+        var sensor3;
+        var sensor4;
+        var sensor5;
+        var sensor6;
+
+        var degree = 0;
+        var getAngleWithOffset = (offset) => (offset + degree) * Math.PI / 180;
+
+        var game = new Phaser.Game(config);
+
+        function create() {
+            graphics = this.add.graphics();
+            rect = new Phaser.Geom.Rectangle(50, 10, 1000, 20); //Remove
+
+            createObjects();
+            setSensorsPosition();
+
+            this.input.keyboard.on('keydown-A', function () {
+                degree = degree + 1;
+                setSensorsPosition();
+            }, this);
+
+            this.input.keyboard.on('keydown-W', function () {
+                translateActor();
+            }, this);
+
+            function createObjects() {
+                actor = new Phaser.Geom.Circle(x, y, 10);
+                sensor1 = new Phaser.Geom.Line();
+                sensor2 = new Phaser.Geom.Line();
+                sensor3 = new Phaser.Geom.Line();
+                sensor4 = new Phaser.Geom.Line();
+                sensor5 = new Phaser.Geom.Line();
+                sensor6 = new Phaser.Geom.Line();
             }
-        });
 
-        var sensor1 = Matter.Bodies.rectangle(x + actorSize + sensorWidth / 2, y, sensorWidth, sensorHeight, {
-            collisionFilter: {
-                group: group
-            },
-            // isStatic: true,
-            isSensor: true,
-            render: {
-                fillStyle: this.green,
-                lineWidth: 0
+            function translateActor() {
+                var translationVector = new Phaser.Math.Vector2(1, 1);
+
+                translationVector.setAngle(getAngleWithOffset(0));
+                Phaser.Geom.Circle.Offset(actor, translationVector.x, translationVector.y);
+                Phaser.Geom.Line.Offset(sensor1, translationVector.x, translationVector.y);
+                Phaser.Geom.Line.Offset(sensor2, translationVector.x, translationVector.y);
+                Phaser.Geom.Line.Offset(sensor3, translationVector.x, translationVector.y);
+                Phaser.Geom.Line.Offset(sensor4, translationVector.x, translationVector.y);
+                Phaser.Geom.Line.Offset(sensor5, translationVector.x, translationVector.y);
+                Phaser.Geom.Line.Offset(sensor6, translationVector.x, translationVector.y);
+
+                x = actor.x;
+                y = actor.y;
             }
-        });
 
-        var sensor2 = Matter.Bodies.rectangle(x, y + actorSize + sensorWidth / 2, sensorHeight, sensorWidth, {
-            collisionFilter: {
-                group: group
-            },
-            // isStatic: true,
-            isSensor: true,
-            render: {
-                fillStyle: this.green,
-                lineWidth: 0
+            function setSensorsPosition() {
+                Phaser.Geom.Line.SetToAngle(sensor1, x, y, getAngleWithOffset(90), sensorWidth);
+                Phaser.Geom.Line.SetToAngle(sensor2, x, y, getAngleWithOffset(45), sensorWidth);
+                Phaser.Geom.Line.SetToAngle(sensor3, x, y, getAngleWithOffset(15), sensorWidth);
+                Phaser.Geom.Line.SetToAngle(sensor4, x, y, getAngleWithOffset(-15), sensorWidth);
+                Phaser.Geom.Line.SetToAngle(sensor5, x, y, getAngleWithOffset(-45), sensorWidth);
+                Phaser.Geom.Line.SetToAngle(sensor6, x, y, getAngleWithOffset(-90), sensorWidth);
             }
-        });
+        }
 
-        var sensor3 = Matter.Bodies.rectangle(x, y - (actorSize + sensorWidth / 2), sensorHeight, sensorWidth, {
-            collisionFilter: {
-                group: group
-            },
-            // isStatic: true,
-            isSensor: true,
-            render: {
-                fillStyle: this.green,
-                lineWidth: 0
+        function update() {
+
+            graphics.clear();
+
+            graphics.strokeCircleShape(actor);
+
+            graphics.lineStyle(2, 0x00ff00);
+            graphics.strokeLineShape(sensor1);
+            graphics.strokeLineShape(sensor2);
+            graphics.strokeLineShape(sensor3);
+            graphics.strokeLineShape(sensor4);
+            graphics.strokeLineShape(sensor5);
+            graphics.strokeLineShape(sensor6);
+
+            var inte = []
+
+            if (Phaser.Geom.Intersects.GetLineToRectangle(sensor1, rect, inte)) {
+                graphics.lineStyle(2, 0xff0000);
             }
-        });
+            else {
+                graphics.lineStyle(2, 0xffff00);
+            }
 
-        var sensor4 = Matter.Bodies.rectangle(x + sensorWidth / 2, y + sensorWidth / 2, sensorWidth, sensorHeight, {
-            collisionFilter: {
-                group: group
-            },
-            // isStatic: true,
-            isSensor: true,
-            render: {
-                fillStyle: this.green,
-                lineWidth: 0
-            },
-            angle: 0.7
-        });
+            graphics.strokeRectShape(rect, 2);
 
-        var sensor5 = Matter.Bodies.rectangle(x + sensorWidth / 2, y - sensorWidth / 2, sensorWidth, sensorHeight, {
-            collisionFilter: {
-                group: group
-            },
-            // isStatic: true,
-            isSensor: true,
-            render: {
-                fillStyle: this.green,
-                lineWidth: 0
-            },
-            angle: -0.7
-        });
-
-        Matter.Composite.addBody(actor, body);
-        Matter.Composite.addBody(actor, sensor1);
-        Matter.Composite.addBody(actor, sensor2);
-        Matter.Composite.addBody(actor, sensor3);
-
-        Matter.Composite.addBody(actor, sensor4);
-        Matter.Composite.addBody(actor, sensor5);
-
-        return actor;
-    };
-
-    createMap(world) {
-        Matter.World.add(world, [
-            this.placeWall(50, 10, 1400, 20),
-            this.placeWall(200, 150, 1300, 160),
-
-            this.placeWall(1400, 10, 1410, 800),
-            this.placeWall(1300, 150, 1310, 700),
-
-            this.placeWall(1000, 700, 1310, 710),
-            this.placeWall(850, 800, 1410, 810),
-
-            this.placeWall(850, 400, 860, 800),
-            this.placeWall(1000, 250, 1010, 700),
-
-            this.placeWall(500, 250, 1010, 260),
-            this.placeWall(650, 400, 860, 410),
-
-            this.placeWall(650, 400, 660, 800),
-            this.placeWall(500, 250, 510, 700),
-
-            this.placeWall(200, 700, 510, 710),
-            this.placeWall(50, 800, 660, 810),
-
-            this.placeWall(50, 10, 60, 800),
-            this.placeWall(200, 150, 210, 700),
-        ]);
-    };
-
-    placeWall(x1, y1, x2, y2) {
-        var vertices = [
-            { x: x1, y: y1 },
-            { x: x1, y: y2 },
-            { x: x2, y: y2 },
-            { x: x2, y: y1 }
-        ]
-
-        var body = Matter.Body.create({
-            position: Matter.Vertices.centre(vertices),
-            vertices: vertices,
-            isStatic: true,
-            render: {
-                fillStyle: this.yellow,
-                lineWidth: 0
-            },
-        });
-        return body;
+            if (inte[0]) {
+                console.log(inte[0]?.x + " " + inte[0]?.y)
+            }
+        }
     }
 }
