@@ -16,11 +16,7 @@ const Playground = () => {
         playgroundService.initialize();
     }, []);
 
-    return (
-        <div id="mapView" ref={playgroundViewRef}>
-            <canvas ref={canvasRef} />
-        </div>
-    );
+    return null;
 };
 
 export default Playground;
