@@ -45,7 +45,24 @@ export default class PlaygroundService {
         var inte5
         var inte6
 
-        var wall;
+        var wall1;
+        var wall2;
+        var wall3;
+        var wall4;
+        var wall5;
+        var wall6;
+        var wall7;
+        var wall8;
+        var wall9;
+        var wall10;
+        var wall11;
+        var wall12;
+        var wall13;
+        var wall14;
+        var wall15;
+        var wall16;
+
+        var walls;
 
         var keyUp;
         var keyDown;
@@ -91,8 +108,22 @@ export default class PlaygroundService {
 
             drawCollisionPoints();
 
-
-            graphics.strokeLineShape(wall);
+            graphics.strokeLineShape(wall1);
+            graphics.strokeLineShape(wall2);
+            graphics.strokeLineShape(wall3);
+            graphics.strokeLineShape(wall4);
+            graphics.strokeLineShape(wall5);
+            graphics.strokeLineShape(wall6);
+            graphics.strokeLineShape(wall7);
+            graphics.strokeLineShape(wall8);
+            graphics.strokeLineShape(wall9);
+            graphics.strokeLineShape(wall10);
+            graphics.strokeLineShape(wall11);
+            graphics.strokeLineShape(wall12);
+            graphics.strokeLineShape(wall13);
+            graphics.strokeLineShape(wall14);
+            graphics.strokeLineShape(wall15);
+            graphics.strokeLineShape(wall16);
 
             text.setText("Sensor1:" + inte1?.x + ", " + inte1?.y + ": " + inte1?.z + "\n" +
                 "Sensor2:" + inte2?.x + ", " + inte2?.y + ": " + inte2?.z + "\n" +
@@ -110,44 +141,43 @@ export default class PlaygroundService {
             inte5 = undefined;
             inte6 = undefined;
 
-            if (Phaser.Geom.Intersects.LineToLine(sensor1, wall)) {
-                inte1 = Phaser.Geom.Intersects.GetLineToLine(sensor1, wall);
-                collision1.setPosition(inte1?.x, inte1?.y);
-                graphics.strokeCircleShape(collision1);
-            }
+            for (let index = 0; index < walls.length; index++) {
+                const wall = walls[index];
+                if (Phaser.Geom.Intersects.LineToLine(sensor1, wall)) {
+                    inte1 = Phaser.Geom.Intersects.GetLineToLine(sensor1, wall);
+                    collision1.setPosition(inte1?.x, inte1?.y);
+                    graphics.strokeCircleShape(collision1);
+                }
 
-            if (Phaser.Geom.Intersects.LineToLine(sensor2, wall)) {
-                inte2 = Phaser.Geom.Intersects.GetLineToLine(sensor2, wall);
-                collision2.setPosition(inte2?.x, inte2?.y);
-                graphics.strokeCircleShape(collision2);
-            }
+                if (Phaser.Geom.Intersects.LineToLine(sensor2, wall)) {
+                    inte2 = Phaser.Geom.Intersects.GetLineToLine(sensor2, wall);
+                    collision2.setPosition(inte2?.x, inte2?.y);
+                    graphics.strokeCircleShape(collision2);
+                }
 
-            if (Phaser.Geom.Intersects.LineToLine(sensor3, wall)) {
-                inte3 = Phaser.Geom.Intersects.GetLineToLine(sensor3, wall);
-                collision3.setPosition(inte3?.x, inte3?.y);
-                graphics.strokeCircleShape(collision3);
-            }
+                if (Phaser.Geom.Intersects.LineToLine(sensor3, wall)) {
+                    inte3 = Phaser.Geom.Intersects.GetLineToLine(sensor3, wall);
+                    collision3.setPosition(inte3?.x, inte3?.y);
+                    graphics.strokeCircleShape(collision3);
+                }
 
-            if (Phaser.Geom.Intersects.LineToLine(sensor4, wall)) {
-                inte4 = Phaser.Geom.Intersects.GetLineToLine(sensor4, wall);
-                collision4.setPosition(inte4?.x, inte4?.y);
-                graphics.strokeCircleShape(collision4);
-            }
+                if (Phaser.Geom.Intersects.LineToLine(sensor4, wall)) {
+                    inte4 = Phaser.Geom.Intersects.GetLineToLine(sensor4, wall);
+                    collision4.setPosition(inte4?.x, inte4?.y);
+                    graphics.strokeCircleShape(collision4);
+                }
 
-            if (Phaser.Geom.Intersects.LineToLine(sensor5, wall)) {
-                inte5 = Phaser.Geom.Intersects.GetLineToLine(sensor5, wall);
-                collision5.setPosition(inte5?.x, inte5?.y);
-                graphics.strokeCircleShape(collision5);
-            }
+                if (Phaser.Geom.Intersects.LineToLine(sensor5, wall)) {
+                    inte5 = Phaser.Geom.Intersects.GetLineToLine(sensor5, wall);
+                    collision5.setPosition(inte5?.x, inte5?.y);
+                    graphics.strokeCircleShape(collision5);
+                }
 
-            if (Phaser.Geom.Intersects.LineToLine(sensor6, wall)) {
-                inte6 = Phaser.Geom.Intersects.GetLineToLine(sensor6, wall);
-                collision6.setPosition(inte6?.x, inte6?.y);
-                graphics.strokeCircleShape(collision6);
-            }
-
-            if (inte1) {
-                console.log(inte1?.x + " " + inte1?.y)
+                if (Phaser.Geom.Intersects.LineToLine(sensor6, wall)) {
+                    inte6 = Phaser.Geom.Intersects.GetLineToLine(sensor6, wall);
+                    collision6.setPosition(inte6?.x, inte6?.y);
+                    graphics.strokeCircleShape(collision6);
+                }
             }
         }
 
@@ -180,7 +210,41 @@ export default class PlaygroundService {
         }
 
         function createMap() {
-            wall = new Phaser.Geom.Line(50, 10, 1000, 20);
+            wall1 = new Phaser.Geom.Line(50, 10, 1400, 20);
+            wall2 = new Phaser.Geom.Line(200, 150, 1300, 160);
+            wall3 = new Phaser.Geom.Line(1400, 10, 1410, 800);
+            wall4 = new Phaser.Geom.Line(1300, 150, 1310, 700);
+            wall5 = new Phaser.Geom.Line(1000, 700, 1310, 710);
+            wall6 = new Phaser.Geom.Line(850, 800, 1410, 810);
+            wall7 = new Phaser.Geom.Line(850, 400, 860, 800);
+            wall8 = new Phaser.Geom.Line(1000, 250, 1010, 700);
+            wall9 = new Phaser.Geom.Line(500, 250, 1010, 260);
+            wall10 = new Phaser.Geom.Line(650, 400, 860, 410);
+            wall11 = new Phaser.Geom.Line(650, 400, 660, 800);
+            wall12 = new Phaser.Geom.Line(500, 250, 510, 700);
+            wall13 = new Phaser.Geom.Line(200, 700, 510, 710);
+            wall14 = new Phaser.Geom.Line(50, 800, 660, 810);
+            wall15 = new Phaser.Geom.Line(50, 10, 60, 800);
+            wall16 = new Phaser.Geom.Line(200, 150, 210, 700);
+
+            walls = [
+                wall1,
+                wall2,
+                wall3,
+                wall4,
+                wall5,
+                wall6,
+                wall7,
+                wall8,
+                wall9,
+                wall10,
+                wall11,
+                wall12,
+                wall13,
+                wall14,
+                wall15,
+                wall16,
+            ]
         }
 
         var getAngleWithOffset = (offset) => (offset + degree) * Math.PI / 180;
