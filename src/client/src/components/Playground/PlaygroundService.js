@@ -210,22 +210,22 @@ export default class PlaygroundService {
         }
 
         function createMap() {
-            wall1 = new Phaser.Geom.Line(50, 10, 1400, 20);
-            wall2 = new Phaser.Geom.Line(200, 150, 1300, 160);
-            wall3 = new Phaser.Geom.Line(1400, 10, 1410, 800);
-            wall4 = new Phaser.Geom.Line(1300, 150, 1310, 700);
-            wall5 = new Phaser.Geom.Line(1000, 700, 1310, 710);
-            wall6 = new Phaser.Geom.Line(850, 800, 1410, 810);
-            wall7 = new Phaser.Geom.Line(850, 400, 860, 800);
-            wall8 = new Phaser.Geom.Line(1000, 250, 1010, 700);
-            wall9 = new Phaser.Geom.Line(500, 250, 1010, 260);
-            wall10 = new Phaser.Geom.Line(650, 400, 860, 410);
-            wall11 = new Phaser.Geom.Line(650, 400, 660, 800);
-            wall12 = new Phaser.Geom.Line(500, 250, 510, 700);
-            wall13 = new Phaser.Geom.Line(200, 700, 510, 710);
-            wall14 = new Phaser.Geom.Line(50, 800, 660, 810);
-            wall15 = new Phaser.Geom.Line(50, 10, 60, 800);
-            wall16 = new Phaser.Geom.Line(200, 150, 210, 700);
+            wall1 = new Phaser.Geom.Line(50, 10, 1400, 10);
+            wall2 = new Phaser.Geom.Line(200, 150, 1300, 150);
+            wall3 = new Phaser.Geom.Line(1400, 10, 1400, 800);
+            wall4 = new Phaser.Geom.Line(1300, 150, 1300, 700);
+            wall5 = new Phaser.Geom.Line(1000, 700, 1300, 700);
+            wall6 = new Phaser.Geom.Line(850, 800, 1400, 800);
+            wall7 = new Phaser.Geom.Line(850, 400, 850, 800);
+            wall8 = new Phaser.Geom.Line(1000, 250, 1000, 700);
+            wall9 = new Phaser.Geom.Line(500, 250, 1000, 250);
+            wall10 = new Phaser.Geom.Line(650, 400, 850, 400);
+            wall11 = new Phaser.Geom.Line(650, 400, 650, 800);
+            wall12 = new Phaser.Geom.Line(500, 250, 500, 700);
+            wall13 = new Phaser.Geom.Line(200, 700, 500, 700);
+            wall14 = new Phaser.Geom.Line(50, 800, 650, 800);
+            wall15 = new Phaser.Geom.Line(50, 10, 50, 800);
+            wall16 = new Phaser.Geom.Line(200, 150, 200, 700);
 
             walls = [
                 wall1,
