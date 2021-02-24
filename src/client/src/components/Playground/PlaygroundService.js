@@ -15,8 +15,8 @@ export default class PlaygroundService {
         var yellow = 0xffff00;
 
         var sensorWidth = 100;
-        var x = 300;
-        var y = 300;
+        var x = 225;
+        var y = 80;
         var degree = 0;
 
         var graphics;
@@ -44,23 +44,6 @@ export default class PlaygroundService {
         var inte4
         var inte5
         var inte6
-
-        var wall1;
-        var wall2;
-        var wall3;
-        var wall4;
-        var wall5;
-        var wall6;
-        var wall7;
-        var wall8;
-        var wall9;
-        var wall10;
-        var wall11;
-        var wall12;
-        var wall13;
-        var wall14;
-        var wall15;
-        var wall16;
 
         var walls;
 
@@ -108,22 +91,9 @@ export default class PlaygroundService {
 
             drawCollisionPoints();
 
-            graphics.strokeLineShape(wall1);
-            graphics.strokeLineShape(wall2);
-            graphics.strokeLineShape(wall3);
-            graphics.strokeLineShape(wall4);
-            graphics.strokeLineShape(wall5);
-            graphics.strokeLineShape(wall6);
-            graphics.strokeLineShape(wall7);
-            graphics.strokeLineShape(wall8);
-            graphics.strokeLineShape(wall9);
-            graphics.strokeLineShape(wall10);
-            graphics.strokeLineShape(wall11);
-            graphics.strokeLineShape(wall12);
-            graphics.strokeLineShape(wall13);
-            graphics.strokeLineShape(wall14);
-            graphics.strokeLineShape(wall15);
-            graphics.strokeLineShape(wall16);
+            walls.forEach(wall => {
+                graphics.strokeLineShape(wall);
+            });
 
             text.setText("Sensor1:" + inte1?.x + ", " + inte1?.y + ": " + inte1?.z + "\n" +
                 "Sensor2:" + inte2?.x + ", " + inte2?.y + ": " + inte2?.z + "\n" +
@@ -210,40 +180,25 @@ export default class PlaygroundService {
         }
 
         function createMap() {
-            wall1 = new Phaser.Geom.Line(50, 10, 1400, 10);
-            wall2 = new Phaser.Geom.Line(200, 150, 1300, 150);
-            wall3 = new Phaser.Geom.Line(1400, 10, 1400, 800);
-            wall4 = new Phaser.Geom.Line(1300, 150, 1300, 700);
-            wall5 = new Phaser.Geom.Line(1000, 700, 1300, 700);
-            wall6 = new Phaser.Geom.Line(850, 800, 1400, 800);
-            wall7 = new Phaser.Geom.Line(850, 400, 850, 800);
-            wall8 = new Phaser.Geom.Line(1000, 250, 1000, 700);
-            wall9 = new Phaser.Geom.Line(500, 250, 1000, 250);
-            wall10 = new Phaser.Geom.Line(650, 400, 850, 400);
-            wall11 = new Phaser.Geom.Line(650, 400, 650, 800);
-            wall12 = new Phaser.Geom.Line(500, 250, 500, 700);
-            wall13 = new Phaser.Geom.Line(200, 700, 500, 700);
-            wall14 = new Phaser.Geom.Line(50, 800, 650, 800);
-            wall15 = new Phaser.Geom.Line(50, 10, 50, 800);
-            wall16 = new Phaser.Geom.Line(200, 150, 200, 700);
-
             walls = [
-                wall1,
-                wall2,
-                wall3,
-                wall4,
-                wall5,
-                wall6,
-                wall7,
-                wall8,
-                wall9,
-                wall10,
-                wall11,
-                wall12,
-                wall13,
-                wall14,
-                wall15,
-                wall16,
+                new Phaser.Geom.Line(200, 10, 200, 150),
+                new Phaser.Geom.Line(200, 10, 1400, 10),
+                new Phaser.Geom.Line(200, 150, 1300, 150),
+                new Phaser.Geom.Line(1400, 10, 1400, 800),
+                new Phaser.Geom.Line(1300, 150, 1300, 700),
+                new Phaser.Geom.Line(1000, 700, 1300, 700),
+                new Phaser.Geom.Line(850, 800, 1400, 800),
+                new Phaser.Geom.Line(850, 400, 850, 800),
+                new Phaser.Geom.Line(1000, 250, 1000, 700),
+                new Phaser.Geom.Line(500, 250, 1000, 250),
+                new Phaser.Geom.Line(650, 400, 850, 400),
+                new Phaser.Geom.Line(650, 400, 650, 800),
+                new Phaser.Geom.Line(500, 250, 500, 700),
+                new Phaser.Geom.Line(150, 700, 500, 700),
+                new Phaser.Geom.Line(10, 800, 650, 800),
+                new Phaser.Geom.Line(10, 10, 10, 800),
+                new Phaser.Geom.Line(150, 10, 150, 700),
+                new Phaser.Geom.Line(10, 10, 150, 10),
             ]
         }
 
