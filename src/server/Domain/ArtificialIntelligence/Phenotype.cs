@@ -13,6 +13,6 @@ namespace Hermes.Domain.ArtificialIntelligence
 
         public int Generation { get; }
         public Genotype<T> Genotype { get; }
-        public double Fitness => fitnessFunction.GetFitness(Genotype);
+        public double Fitness => fitnessFunction.GetFitness(this);
     }
 }
