@@ -49,9 +49,9 @@ namespace ArtificialIntelligenceTest
             var b = new NeuralLayer(
                         new Neuron[3]
                         {
-                            GetNeuron(a.neurons, w1),
-                            GetNeuron(a.neurons, w1),
-                            GetNeuron(a.neurons, w1),
+                            GetNeuron(a.Neurons, w1),
+                            GetNeuron(a.Neurons, w1),
+                            GetNeuron(a.Neurons, w1),
                         }
                     );
 
