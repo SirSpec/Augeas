@@ -10,7 +10,7 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
             Weight = weight;
         }
 
-        public double InputValue => connectedNeuron.Output;
+        public double Value => connectedNeuron.Output;
         public double Weight { get; set; }
     }
 }
