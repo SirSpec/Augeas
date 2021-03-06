@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence
+namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
     // https://en.wikipedia.org/wiki/Chromosome_(genetic_algorithm)
     public class Genotype<T>

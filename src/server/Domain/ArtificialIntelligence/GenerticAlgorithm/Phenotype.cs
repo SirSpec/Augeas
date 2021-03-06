@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence
+namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
     public class Phenotype<T>
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hermes.Domain.ArtificialIntelligence
+namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
     public class Population<T>
     {

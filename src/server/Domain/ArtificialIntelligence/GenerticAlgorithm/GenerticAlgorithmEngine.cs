@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hermes.Domain.ArtificialIntelligence
+namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
     // https://en.wikipedia.org/wiki/Genetic_algorithm
     public class GenerticAlgorithmEngine<T>
