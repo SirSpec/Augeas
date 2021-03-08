@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import * as signalR from "@microsoft/signalr"
 import Sensor from './Sensor';
+import Actor from './Actor';
 
 export default class PlaygroundService {
     constructor(playgroundViewRef, canvasRef, width, height) {
@@ -12,34 +13,65 @@ export default class PlaygroundService {
     }
 
     initialize() {
+        var green = 0x00ff00;
+        var red = 0xff0000;
+        var yellow = "#ffff00";
+
         var connection = new signalR.HubConnectionBuilder()
             .withUrl("https://localhost:5001/hub")
             .build()
 
-        connection.on("ReceiveAngle", (id, angle) => degree = angle)
+        connection.on("ReceiveAngle", (id, angle) => actor.angle = angle);
+
+        function angle(id, sensors) {
+            connection
+                .invoke("GetAngle", id, sensors)
+                .catch(err => console.log(err.toString()));
+        }
+
+        function evaluate(id, evalua) {
+            connection
+                .invoke("Evaluate", id, evalua)
+                .catch(err => console.log(err.toString()));
+        }
 
         connection
             .start()
             .then(() => console.log("Sudoku component connection started."))
             .catch(error => console.log(error))
 
-        var green = 0x00ff00;
-        var red = 0xff0000;
-        var yellow = 0xffff00;
-
-        var x = 225;
-        var y = 80;
-        var degree = 0;
-
         var graphics;
 
-        var actor;
-
-        var sensors = []
+        var actor = new Actor(225, 80, 0, new Phaser.Geom.Circle(null, null, 10), [
+            new Sensor("Sensor 1", -90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 2", -45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 3", -15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 4", 15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 5", 45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 6", 90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+        ]);
 
         var text;
-
-        var walls;
+        var walls = [
+            new Phaser.Geom.Line(200, 10, 200, 150),
+            new Phaser.Geom.Line(200, 10, 1400, 10),
+            new Phaser.Geom.Line(200, 150, 1300, 150),
+            new Phaser.Geom.Line(1400, 10, 1400, 800),
+            new Phaser.Geom.Line(1300, 150, 1300, 700),
+            new Phaser.Geom.Line(1000, 700, 1300, 700),
+            new Phaser.Geom.Line(850, 800, 1400, 800),
+            new Phaser.Geom.Line(850, 400, 850, 800),
+            new Phaser.Geom.Line(1000, 250, 1000, 700),
+            new Phaser.Geom.Line(500, 250, 1000, 250),
+            new Phaser.Geom.Line(650, 400, 850, 400),
+            new Phaser.Geom.Line(650, 400, 650, 800),
+            new Phaser.Geom.Line(500, 250, 500, 700),
+            new Phaser.Geom.Line(150, 700, 500, 700),
+            new Phaser.Geom.Line(10, 800, 650, 800),
+            new Phaser.Geom.Line(10, 10, 10, 800),
+            new Phaser.Geom.Line(150, 10, 150, 700),
+            new Phaser.Geom.Line(10, 10, 150, 10),
+        ];
 
         var keyUp;
         var keyDown;
@@ -60,24 +92,8 @@ export default class PlaygroundService {
         function create() {
             graphics = this.add.graphics();
             createKeyboardInputs(this.input);
-            createActor();
-            createMap();
 
-            text = this.add.text(10, 700,
-                '',
-                { font: '16px Courier', fill: '#ffff00' });
-        }
-
-        function angle(id, sensors) {
-            connection
-                .invoke("GetAngle", id, sensors)
-                .catch(err => console.log(err.toString()));
-        }
-
-        function evaluate(id, evalua) {
-            connection
-                .invoke("Evaluate", id, evalua)
-                .catch(err => console.log(err.toString()));
+            text = this.add.text(10, 700, '', { font: '16px Courier', fill: yellow });
         }
 
         function update() {
@@ -90,14 +106,42 @@ export default class PlaygroundService {
 
             drawActor();
 
-            text.setText(sensors.map(sensor => `${sensor.toString()}`).join("\n"));
+            text.setText(actor.sensors.map(sensor => `${sensor.toString()}`).join("\n"));
 
             hangleKeyboardInputs();
         }
 
+        function hangleKeyboardInputs() {
+            angle("1", actor.sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
+
+            if (keyUp.isDown) {
+                var translationVector = new Phaser.Math.Vector2(1, 1);
+                actor.translateActor(translationVector);
+            }
+            if (keyDown.isDown) {
+                var translationVector = new Phaser.Math.Vector2(-1, 1);
+                actor.translateActor(translationVector);
+            }
+            if (keyLeft.isDown) {
+                actor.rotate(actor.angle - 1);
+            }
+            if (keyRight.isDown) {
+                actor.rotate(actor.angle + 1);
+            }
+        }
+
+        function drawActor() {
+            graphics.lineStyle(2, red);
+            graphics.strokeCircleShape(actor.actorObject);
+            actor.sensors.forEach(sensor => {
+                graphics.strokeLineShape(sensor.sensorLine);
+            });
+            drawCollisionPoints();
+        }
+
         function drawCollisionPoints() {
-            for (let index = 0; index < sensors.length; index++) {
-                const sensor = sensors[index];
+            for (let index = 0; index < actor.sensors.length; index++) {
+                const sensor = actor.sensors[index];
 
                 for (let index = 0; index < walls.length; index++) {
                     const wall = walls[index];
@@ -117,94 +161,6 @@ export default class PlaygroundService {
             keyDown = input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
             keyLeft = input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
             keyRight = input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        }
-
-        function createActor() {
-            actor = new Phaser.Geom.Circle(x, y, 10);
-            sensors = [
-                new Sensor("Sensor 1", -90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-                new Sensor("Sensor 2", -45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-                new Sensor("Sensor 3", -15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-                new Sensor("Sensor 4", 15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-                new Sensor("Sensor 5", 45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-                new Sensor("Sensor 6", 90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-            ];
-
-            setSensorsPosition();
-        }
-
-        function drawActor() {
-            graphics.lineStyle(2, red);
-            graphics.strokeCircleShape(actor);
-            sensors.forEach(sensor => {
-                graphics.strokeLineShape(sensor.sensorLine);
-            });
-            drawCollisionPoints();
-        }
-
-        function createMap() {
-            walls = [
-                new Phaser.Geom.Line(200, 10, 200, 150),
-                new Phaser.Geom.Line(200, 10, 1400, 10),
-                new Phaser.Geom.Line(200, 150, 1300, 150),
-                new Phaser.Geom.Line(1400, 10, 1400, 800),
-                new Phaser.Geom.Line(1300, 150, 1300, 700),
-                new Phaser.Geom.Line(1000, 700, 1300, 700),
-                new Phaser.Geom.Line(850, 800, 1400, 800),
-                new Phaser.Geom.Line(850, 400, 850, 800),
-                new Phaser.Geom.Line(1000, 250, 1000, 700),
-                new Phaser.Geom.Line(500, 250, 1000, 250),
-                new Phaser.Geom.Line(650, 400, 850, 400),
-                new Phaser.Geom.Line(650, 400, 650, 800),
-                new Phaser.Geom.Line(500, 250, 500, 700),
-                new Phaser.Geom.Line(150, 700, 500, 700),
-                new Phaser.Geom.Line(10, 800, 650, 800),
-                new Phaser.Geom.Line(10, 10, 10, 800),
-                new Phaser.Geom.Line(150, 10, 150, 700),
-                new Phaser.Geom.Line(10, 10, 150, 10),
-            ]
-        }
-
-        var getAngleWithOffset = (offset) => (offset + degree) * Math.PI / 180;
-
-        function translateActor(translationVector) {
-            translationVector.setAngle(getAngleWithOffset(0));
-            Phaser.Geom.Circle.Offset(actor, translationVector.x, translationVector.y);
-
-            sensors.forEach(sensor => {
-                Phaser.Geom.Line.Offset(sensor.sensorLine, translationVector.x, translationVector.y);
-            });
-
-            x = actor.x;
-            y = actor.y;
-        }
-
-        function setSensorsPosition() {
-            sensors.forEach(sensor => {
-                Phaser.Geom.Line.SetToAngle(sensor.sensorLine, x, y, sensor.getAngle(degree), sensor.width);
-            });
-        }
-
-        function hangleKeyboardInputs() {
-            angle("1", sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
-            setSensorsPosition();
-
-            if (keyUp.isDown) {
-                var translationVector = new Phaser.Math.Vector2(1, 1);
-                translateActor(translationVector);
-            }
-            if (keyDown.isDown) {
-                var translationVector = new Phaser.Math.Vector2(-1, 1);
-                translateActor(translationVector);
-            }
-            if (keyLeft.isDown) {
-                degree = degree - 1;
-                setSensorsPosition();
-            }
-            if (keyRight.isDown) {
-                degree = degree + 1;
-                setSensorsPosition();
-            }
         }
     }
 }
