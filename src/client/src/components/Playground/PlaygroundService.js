@@ -186,13 +186,7 @@ export default class PlaygroundService {
         }
 
         function hangleKeyboardInputs() {
-            angle("1", [
-                sensors[0].collisionCoordinate.distance ?? 1.0,
-                sensors[1].collisionCoordinate.distance ?? 1.0,
-                sensors[2].collisionCoordinate.distance ?? 1.0,
-                sensors[3].collisionCoordinate.distance ?? 1.0,
-                sensors[4].collisionCoordinate.distance ?? 1.0,
-                sensors[5].collisionCoordinate.distance ?? 1.0]);
+            angle("1", sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
             setSensorsPosition();
 
             if (keyUp.isDown) {
