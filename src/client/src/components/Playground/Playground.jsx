@@ -11,7 +11,7 @@ const Playground = () => {
             playgroundViewRef,
             canvasRef,
             window.innerWidth * 0.8,
-            window.innerHeight * 0.9);
+            window.innerHeight * 0.98);
 
         playgroundService.initialize();
     }, []);
