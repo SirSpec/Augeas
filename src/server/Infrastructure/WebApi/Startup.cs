@@ -25,6 +25,13 @@ namespace Hermes.Infrastructure.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .WithMethods("GET", "POST")
+                    .AllowCredentials()
+            );
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -33,6 +40,8 @@ namespace Hermes.Infrastructure.WebApi
                 {
                     await context.Response.WriteAsync("Hermes");
                 });
+
+                endpoints.MapHub<CarHub>("/hub");
             });
         }
     }
