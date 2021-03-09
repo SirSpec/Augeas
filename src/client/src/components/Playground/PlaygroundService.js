@@ -168,7 +168,7 @@ export default class PlaygroundService {
             drawActor();
 
             text.setText(
-                `Checkpoints: ${count.filter(Boolean).length}(${count.filter(Boolean).length/count.length})\n` +
+                `Checkpoints: ${count.filter(Boolean).length}(${count.filter(Boolean).length/count.length})|Alive:${actor.isAlive}\n` +
                 actor.sensors.map(sensor => `${sensor.toString()}`).join("\n"));
 
             hangleKeyboardInputs();
@@ -223,6 +223,11 @@ export default class PlaygroundService {
 
                 for (let index = 0; index < walls.length; index++) {
                     const wall = walls[index];
+
+                    if(actor.isAlive && Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject))
+                    {
+                        actor.isAlive = false;
+                    }
 
                     if (Phaser.Geom.Intersects.LineToLine(sensor.sensorLine, wall)) {
                         var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
