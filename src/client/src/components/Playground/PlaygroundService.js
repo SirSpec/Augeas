@@ -21,7 +21,10 @@ export default class PlaygroundService {
             .withUrl("https://localhost:5001/hub")
             .build()
 
-        connection.on("ReceiveAngle", (id, angle) => actor.angle = angle);
+        connection.on("ReceiveAngle", (id, angle) => {
+            actor.angle = angle
+            actor.translateActor(new Phaser.Math.Vector2(1, 1));
+        });
 
         function angle(id, sensors) {
             connection
@@ -73,6 +76,59 @@ export default class PlaygroundService {
             new Phaser.Geom.Line(10, 10, 150, 10),
         ];
 
+        var checkpoints = [
+            new Phaser.Geom.Line(300, 20, 300, 140),
+            new Phaser.Geom.Line(400, 20, 400, 140),
+            new Phaser.Geom.Line(500, 20, 500, 140),
+            new Phaser.Geom.Line(600, 20, 600, 140),
+            new Phaser.Geom.Line(700, 20, 700, 140),
+            new Phaser.Geom.Line(800, 20, 800, 140),
+            new Phaser.Geom.Line(900, 20, 900, 140),
+            new Phaser.Geom.Line(1000, 20, 1000, 140),
+            new Phaser.Geom.Line(1100, 20, 1100, 140),
+            new Phaser.Geom.Line(1200, 20, 1200, 140),
+            new Phaser.Geom.Line(1300, 20, 1300, 140),
+
+            new Phaser.Geom.Line(1310, 150, 1390, 150),
+            new Phaser.Geom.Line(1310, 250, 1390, 250),
+            new Phaser.Geom.Line(1310, 350, 1390, 350),
+            new Phaser.Geom.Line(1310, 450, 1390, 450),
+            new Phaser.Geom.Line(1310, 550, 1390, 550),
+            new Phaser.Geom.Line(1310, 650, 1390, 650),
+
+            new Phaser.Geom.Line(1300, 710, 1300, 790),
+            new Phaser.Geom.Line(1200, 710, 1200, 790),
+            new Phaser.Geom.Line(1100, 710, 1100, 790),
+            new Phaser.Geom.Line(1000, 710, 1000, 790),
+
+            new Phaser.Geom.Line(860, 700, 990, 700),
+            new Phaser.Geom.Line(860, 600, 990, 600),
+            new Phaser.Geom.Line(860, 500, 990, 500),
+            new Phaser.Geom.Line(860, 400, 990, 400),
+
+            new Phaser.Geom.Line(850, 260, 850, 390),
+            new Phaser.Geom.Line(750, 260, 750, 390),
+            new Phaser.Geom.Line(650, 260, 650, 390),
+
+            new Phaser.Geom.Line(510, 400, 640, 400),
+            new Phaser.Geom.Line(510, 500, 640, 500),
+            new Phaser.Geom.Line(510, 600, 640, 600),
+            new Phaser.Geom.Line(510, 700, 640, 700),
+
+            new Phaser.Geom.Line(500, 710, 500, 790),
+            new Phaser.Geom.Line(400, 710, 400, 790),
+            new Phaser.Geom.Line(300, 710, 300, 790),
+            new Phaser.Geom.Line(200, 710, 200, 790),
+
+            new Phaser.Geom.Line(20, 700, 140, 700),
+            new Phaser.Geom.Line(20, 600, 140, 600),
+            new Phaser.Geom.Line(20, 500, 140, 500),
+            new Phaser.Geom.Line(20, 400, 140, 400),
+            new Phaser.Geom.Line(20, 300, 140, 300),
+            new Phaser.Geom.Line(20, 200, 140, 200),
+            new Phaser.Geom.Line(20, 100, 140, 100),
+        ];
+
         var keyUp;
         var keyDown;
         var keyLeft;
@@ -93,7 +149,7 @@ export default class PlaygroundService {
             graphics = this.add.graphics();
             createKeyboardInputs(this.input);
 
-            text = this.add.text(10, 700, '', { font: '16px Courier', fill: yellow });
+            text = this.add.text(10, 810, '', { font: '16px Courier', fill: yellow });
         }
 
         function update() {
@@ -104,15 +160,37 @@ export default class PlaygroundService {
                 graphics.strokeLineShape(wall);
             });
 
+            graphics.lineStyle(1, 0xffff00);
+            checkpoints.forEach(checkpoint => {
+                graphics.strokeLineShape(checkpoint);
+            });
+
             drawActor();
 
-            text.setText(actor.sensors.map(sensor => `${sensor.toString()}`).join("\n"));
+            text.setText(
+                `Checkpoints: ${count.filter(Boolean).length}(${count.filter(Boolean).length/count.length})\n` +
+                actor.sensors.map(sensor => `${sensor.toString()}`).join("\n"));
 
             hangleKeyboardInputs();
+            countCheckpoints()
+        }
+
+        var count = new Array(checkpoints.length).fill(false);
+
+        function countCheckpoints() {
+            for (let index = 0; index < checkpoints.length; index++) {
+                const checkpoint = checkpoints[index];
+
+                if (Phaser.Geom.Intersects.LineToCircle(checkpoint, actor.actorObject)) {
+                    count[index] = true;
+                    break;
+                }
+            }
         }
 
         function hangleKeyboardInputs() {
             angle("1", actor.sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
+            actor.setSensorsPosition();
 
             if (keyUp.isDown) {
                 var translationVector = new Phaser.Math.Vector2(1, 1);
@@ -152,6 +230,7 @@ export default class PlaygroundService {
                         graphics.strokeCircleShape(sensor.collisionCircle);
                         break;
                     }
+                    else sensor.reset()
                 }
             }
         }
