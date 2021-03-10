@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Hermes.Domain.ArtificialIntelligence;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Hermes.Infrastructure.WebApi
 {
     public class CarHub : Hub
     {
-        private static IEnumerable<(string Id, Actor actor)> actors = new List<(string Id, Actor actor)>
+        private static Manager manager = new Manager();
+
+        public async Task GetAngle(int index, double[] sensors)
         {
-            ("1", new Actor()),
-        };
+            var angle = manager.GetAngle(index, sensors);
+            await Clients.Caller.SendAsync("ReceiveAngle", index, angle);
+        }
 
-        public async Task GetAngle(string id, double[] sensors)
+        public async Task SetFitness(int index, double fitness)
         {
-            var actor = actors.First(p => p.Id == id).actor;
+            manager.SetFitness(index, fitness);
+            await Clients.Caller.SendAsync("ReceiveConfirmation", true);
+        }
 
-            var angle = actor.GetAngle(sensors);
-
-            await Clients.Caller.SendAsync("ReceiveAngle", id, angle);
+        public async Task GenerateNewPopulation()
+        {
+            manager.GenerateNewPopulation();
+            await Clients.Caller.SendAsync("ReceiveConfirmation", true);
         }
     }
 }
