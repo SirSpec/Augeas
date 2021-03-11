@@ -11,7 +11,16 @@ namespace Hermes.Infrastructure.WebApi
         {
             actors = new[]
             {
-                new Actor(null)
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
+                ActorFactory.GetActor(),
             };
         }
 
@@ -23,7 +32,7 @@ namespace Hermes.Infrastructure.WebApi
 
         public void GenerateNewPopulation()
         {
-            
+
         }
     }
 }
