@@ -26,16 +26,27 @@ export default class PlaygroundService {
             actor.translateActor(new Phaser.Math.Vector2(1, 1));
         });
 
+        connection.on("ReceiveAngle", (id, angle) => {
+            actor.angle = angle
+            actor.translateActor(new Phaser.Math.Vector2(1, 1));
+        });
+
         function angle(id, sensors) {
             connection
                 .invoke("GetAngle", id, sensors)
-                .catch(err => console.log(err.toString()));
+                .catch(error => console.log(error.toString()));
         }
 
-        function evaluate(id, evalua) {
+        function setFitness(id, fitness) {
             connection
-                .invoke("Evaluate", id, evalua)
-                .catch(err => console.log(err.toString()));
+                .invoke("SetFitness", id, fitness)
+                .catch(error => console.log(error.toString()));
+        }
+
+        function generateNewPopulation() {
+            connection
+                .invoke("GenerateNewPopulation")
+                .catch(error => console.log(error.toString()));
         }
 
         connection
@@ -45,7 +56,7 @@ export default class PlaygroundService {
 
         var graphics;
 
-        var actor = new Actor(225, 80, 0, new Phaser.Geom.Circle(null, null, 10), [
+        var actor = new Actor(0, 225, 80, 0, new Phaser.Geom.Circle(null, null, 10), [
             new Sensor("Sensor 1", -90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
             new Sensor("Sensor 2", -45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
             new Sensor("Sensor 3", -15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
@@ -168,7 +179,7 @@ export default class PlaygroundService {
             drawActor();
 
             text.setText(
-                `Checkpoints: ${count.filter(Boolean).length}(${count.filter(Boolean).length/count.length})|Alive:${actor.isAlive}\n` +
+                `Checkpoints: ${count.filter(Boolean).length}(${count.filter(Boolean).length / count.length})|Alive:${actor.isAlive}\n` +
                 actor.sensors.map(sensor => `${sensor.toString()}`).join("\n"));
 
             hangleKeyboardInputs();
@@ -189,7 +200,8 @@ export default class PlaygroundService {
         }
 
         function hangleKeyboardInputs() {
-            angle("1", actor.sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
+            if(actor.isAlive)
+                angle(actor.id, actor.sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
             actor.setSensorsPosition();
 
             if (keyUp.isDown) {
@@ -224,13 +236,14 @@ export default class PlaygroundService {
                 for (let index = 0; index < walls.length; index++) {
                     const wall = walls[index];
 
-                    if(actor.isAlive && Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject))
-                    {
+                    if (actor.isAlive && Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject)) {
                         actor.isAlive = false;
+                        setFitness(actor.id, count.filter(Boolean).length / count.length);
+                        generateNewPopulation();
                     }
 
-                    if (Phaser.Geom.Intersects.LineToLine(sensor.sensorLine, wall)) {
-                        var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
+                    var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
+                    if (intersection?.z <= 1) {
                         sensor.setCollision(intersection?.x, intersection?.y, intersection?.z)
                         graphics.strokeCircleShape(sensor.collisionCircle);
                         break;
