@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 
 export default class Actor {
-    constructor(x, y, angle, actorObject, sensors) {
+    constructor(id, x, y, angle, actorObject, sensors) {
+        this.id = id;
         this.x = x;
         this.y = y;
         this.angle = angle;
