@@ -22,7 +22,7 @@ namespace Hermes.Infrastructure.WebApi
         public async Task GenerateNewPopulation()
         {
             manager.GenerateNewPopulation();
-            await Clients.Caller.SendAsync("ReceiveConfirmation", true);
+            await Clients.Caller.SendAsync("ReceiveNewPopulation", true);
         }
     }
 }
