@@ -21,14 +21,6 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
             this.inputs = inputs;
         }
 
-        public Neuron(
-            IPropagationFunction propagationFunction,
-            IActivationFunction activationFunction,
-            double bias)
-            : this(propagationFunction, activationFunction, new List<Connection>(), bias)
-        {
-        }
-
         public double Output => activationFunction.CalculateOutput(Activation + bias);
 
         public void AddInput(Connection connection)
