@@ -6,7 +6,7 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
     {
         public InputNeuron[] Neurons { get; }
 
-        public InputLayer(InputNeuron[] neurons)
+        public InputLayer(params InputNeuron[] neurons)
         {
             this.Neurons = neurons;
         }
