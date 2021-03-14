@@ -52,7 +52,7 @@ namespace Hermes.Infrastructure.WebApi
         {
             for (int i = 0; i < size; i++)
             {
-                yield return Randomizer.RandomDouble(-10, 10);
+                yield return Randomizer.RandomDouble(-1, 1);
             }
         }
 
