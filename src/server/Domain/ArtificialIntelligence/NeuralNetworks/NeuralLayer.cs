@@ -4,7 +4,7 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
     {
         public Neuron[] Neurons { get; }
 
-        public NeuralLayer(Neuron[] neurons)
+        public NeuralLayer(params Neuron[] neurons)
         {
             Neurons = neurons;
         }
