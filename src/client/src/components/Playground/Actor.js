@@ -7,6 +7,7 @@ export default class Actor {
         this.y = y;
         this.angle = angle;
         this.isAlive = true;
+        this.fitness = 0;
 
         this.actorObject = actorObject;
         this.actorObject.setPosition(this.x, this.y);
