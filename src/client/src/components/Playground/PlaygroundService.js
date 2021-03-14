@@ -21,14 +21,18 @@ export default class PlaygroundService {
             .withUrl("https://localhost:5001/hub")
             .build()
 
-        connection.on("ReceiveAngle", (id, angle) => {
-            actor.angle = angle
-            actor.translateActor(new Phaser.Math.Vector2(1, 1));
+        connection.on("ReceiveNewPopulation", () => {
+            actors.forEach(actor => {
+                actor.rotate(0);
+                actor.setPosition(225, 80);
+                actor.isAlive = true;
+                actor.fitness = 0;
+            });
         });
 
         connection.on("ReceiveAngle", (id, angle) => {
-            actor.angle = angle
-            actor.translateActor(new Phaser.Math.Vector2(1, 1));
+            actors[id].angle = angle * 180;
+            actors[id].translateActor(new Phaser.Math.Vector2(1, 1));
         });
 
         function angle(id, sensors) {
@@ -56,14 +60,29 @@ export default class PlaygroundService {
 
         var graphics;
 
-        var actor = new Actor(0, 225, 80, 0, new Phaser.Geom.Circle(null, null, 10), [
-            new Sensor("Sensor 1", -90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-            new Sensor("Sensor 2", -45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-            new Sensor("Sensor 3", -15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-            new Sensor("Sensor 4", 15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-            new Sensor("Sensor 5", 45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-            new Sensor("Sensor 6", 90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
-        ]);
+        function getActor(id) {
+            return new Actor(id, 225, 80, 0, new Phaser.Geom.Circle(null, null, 10), [
+                new Sensor("Sensor 1", -90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+                new Sensor("Sensor 2", -45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+                new Sensor("Sensor 3", -15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+                new Sensor("Sensor 4", 15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+                new Sensor("Sensor 5", 45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+                new Sensor("Sensor 6", 90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            ]);
+        }
+
+        var actors = [
+            getActor(0),
+            getActor(1),
+            getActor(2),
+            getActor(3),
+            getActor(4),
+            getActor(5),
+            getActor(6),
+            getActor(7),
+            getActor(8),
+            getActor(9),
+        ];
 
         var text;
         var walls = [
@@ -101,6 +120,7 @@ export default class PlaygroundService {
             new Phaser.Geom.Line(1300, 20, 1300, 140),
 
             new Phaser.Geom.Line(1310, 150, 1390, 150),
+            new Phaser.Geom.Line(1310, 200, 1390, 200),
             new Phaser.Geom.Line(1310, 250, 1390, 250),
             new Phaser.Geom.Line(1310, 350, 1390, 350),
             new Phaser.Geom.Line(1310, 450, 1390, 450),
@@ -164,6 +184,20 @@ export default class PlaygroundService {
         }
 
         function update() {
+            var allDead = false;
+            for (let index = 0; index < actors.length; index++) {
+                const actor = actors[index];
+                if (actor.isAlive === false) {
+                    allDead = true;
+                }
+                else {
+                    allDead = false;
+                    break;
+                }
+            }
+
+            if (allDead) generateNewPopulation();
+
             graphics.clear();
             graphics.lineStyle(2, green);
 
@@ -179,78 +213,92 @@ export default class PlaygroundService {
             drawActor();
 
             text.setText(
-                `Checkpoints: ${count.filter(Boolean).length}(${count.filter(Boolean).length / count.length})|Alive:${actor.isAlive}\n` +
-                actor.sensors.map(sensor => `${sensor.toString()}`).join("\n"));
+                `Checkpoints: ${actors[0].fitness}|Alive:${actors[0].isAlive}\n` +
+                actors[0].sensors.map(sensor => `${sensor.toString()}`).join("\n"));
 
             hangleKeyboardInputs();
             countCheckpoints()
         }
 
-        var count = new Array(checkpoints.length).fill(false);
-
         function countCheckpoints() {
             for (let index = 0; index < checkpoints.length; index++) {
                 const checkpoint = checkpoints[index];
 
-                if (Phaser.Geom.Intersects.LineToCircle(checkpoint, actor.actorObject)) {
-                    count[index] = true;
-                    break;
+                for (let j = 0; j < actors.length; j++) {
+                    const actor = actors[j];
+                    if (Phaser.Geom.Intersects.LineToCircle(checkpoint, actor.actorObject)) {
+                        actor.fitness = (index + 1) / checkpoints.length;
+                        break;
+                    }
                 }
             }
         }
 
+        function getDistance(d) {
+            return 1 - (d ?? 0.0);
+        }
+
         function hangleKeyboardInputs() {
-            if(actor.isAlive)
-                angle(actor.id, actor.sensors.map(sensor => sensor.collisionCoordinate.distance ?? 1.0));
-            actor.setSensorsPosition();
+
+            actors.forEach(actor => {
+                if (actor.isAlive)
+                    angle(actor.id, actor.sensors.map(sensor => getDistance(sensor.collisionCoordinate.distance)));
+                actor.setSensorsPosition();
+            });
 
             if (keyUp.isDown) {
+                // actors.forEach(actor => {
+                //     actor.isAlive = false;
+                // });
                 var translationVector = new Phaser.Math.Vector2(1, 1);
-                actor.translateActor(translationVector);
+                actors[0].translateActor(translationVector);
             }
             if (keyDown.isDown) {
                 var translationVector = new Phaser.Math.Vector2(-1, 1);
-                actor.translateActor(translationVector);
+                actors[0].translateActor(translationVector);
             }
             if (keyLeft.isDown) {
-                actor.rotate(actor.angle - 1);
+                actors[0].rotate(actors[0].angle - 1);
             }
             if (keyRight.isDown) {
-                actor.rotate(actor.angle + 1);
+                actors[0].rotate(actors[0].angle + 1);
             }
         }
 
         function drawActor() {
             graphics.lineStyle(2, red);
-            graphics.strokeCircleShape(actor.actorObject);
-            actor.sensors.forEach(sensor => {
-                graphics.strokeLineShape(sensor.sensorLine);
+            actors.forEach(actor => {
+                graphics.strokeCircleShape(actor.actorObject);
+                actor.sensors.forEach(sensor => {
+                    graphics.strokeLineShape(sensor.sensorLine);
+                });
             });
             drawCollisionPoints();
         }
 
         function drawCollisionPoints() {
-            for (let index = 0; index < actor.sensors.length; index++) {
-                const sensor = actor.sensors[index];
+            actors.forEach(actor => {
+                for (let index = 0; index < actor.sensors.length; index++) {
+                    const sensor = actor.sensors[index];
 
-                for (let index = 0; index < walls.length; index++) {
-                    const wall = walls[index];
+                    for (let index = 0; index < walls.length; index++) {
+                        const wall = walls[index];
 
-                    if (actor.isAlive && Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject)) {
-                        actor.isAlive = false;
-                        setFitness(actor.id, count.filter(Boolean).length / count.length);
-                        generateNewPopulation();
+                        if (actor.isAlive && Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject)) {
+                            actor.isAlive = false;
+                            setFitness(actor.id, actor.fitness);
+                        }
+
+                        var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
+                        if (intersection?.z <= 1) {
+                            sensor.setCollision(intersection?.x, intersection?.y, intersection?.z)
+                            graphics.strokeCircleShape(sensor.collisionCircle);
+                            break;
+                        }
+                        else sensor.reset()
                     }
-
-                    var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
-                    if (intersection?.z <= 1) {
-                        sensor.setCollision(intersection?.x, intersection?.y, intersection?.z)
-                        graphics.strokeCircleShape(sensor.collisionCircle);
-                        break;
-                    }
-                    else sensor.reset()
                 }
-            }
+            });
         }
 
         function createKeyboardInputs(input) {
