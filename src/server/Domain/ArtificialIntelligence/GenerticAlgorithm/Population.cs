@@ -23,8 +23,5 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 
         public Phenotype<T> Fittest =>
             phenotypes.OrderByDescending(phenotype => phenotype.Fitness).First();
-
-        public Population<T> CreateNextGeneration(params Phenotype<T>[] phenotypes) =>
-            new Population<T>(Generation + 1, phenotypes);
     }
 }
