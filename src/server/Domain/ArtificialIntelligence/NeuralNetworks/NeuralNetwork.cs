@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
@@ -19,6 +20,20 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
         {
             inputLayer.PushInputs(inputs);
             return outputLayer.Outputs;
+        }
+
+        public IEnumerable<double> GetWeights()
+        {
+            var connections = hiddenLayers.SelectMany(h => h.Neurons).SelectMany(n => n.inputs).Concat(outputLayer.neurons.SelectMany(n => n.inputs)).ToArray();
+
+            return connections.Select(c => c.Weight);
+        }
+
+        public void SetWeight(int i, double g)
+        {
+            var connections = hiddenLayers.SelectMany(h => h.Neurons).SelectMany(n => n.inputs).Concat(outputLayer.neurons.SelectMany(n => n.inputs)).ToArray();
+
+            connections[i].Weight = g;
         }
     }
 }
