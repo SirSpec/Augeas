@@ -2,17 +2,12 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
     public class Phenotype<T>
     {
-        private readonly IFitnessFunction fitnessFunction;
-
-        public Phenotype(IFitnessFunction fitnessFunction, Genotype<T> genotype, int generation)
+        public Phenotype(Genotype<T> genotype)
         {
-            this.fitnessFunction = fitnessFunction;
             Genotype = genotype;
-            Generation = generation;
         }
 
-        public int Generation { get; }
         public Genotype<T> Genotype { get; }
-        public double Fitness => fitnessFunction.GetFitness(this);
+        public double Fitness { get; set; }
     }
 }
