@@ -5,9 +5,9 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
     public class OutputLayer
     {
-        private readonly Neuron[] neurons;
+        public readonly Neuron[] neurons;
 
-        public OutputLayer(Neuron[] neurons)
+        public OutputLayer(params Neuron[] neurons)
         {
             this.neurons = neurons;
         }
