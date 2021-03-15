@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import * as signalR from "@microsoft/signalr"
 import Sensor from './Sensor';
 import Actor from './Actor';
+import Map from './Map';
 
 export default class PlaygroundService {
     constructor(playgroundViewRef, canvasRef, width, height) {
@@ -10,9 +11,12 @@ export default class PlaygroundService {
 
         this.playgroundWidth = width;
         this.playgroundHeight = height;
+
+        this.map = new Map(100, 100, 150);
     }
 
     initialize() {
+        1
         var green = 0x00ff00;
         var red = 0xff0000;
         var yellow = "#ffff00";
@@ -85,80 +89,8 @@ export default class PlaygroundService {
         ];
 
         var text;
-        var walls = [
-            new Phaser.Geom.Line(200, 10, 200, 150),
-            new Phaser.Geom.Line(200, 10, 1400, 10),
-            new Phaser.Geom.Line(200, 150, 1300, 150),
-            new Phaser.Geom.Line(1400, 10, 1400, 800),
-            new Phaser.Geom.Line(1300, 150, 1300, 700),
-            new Phaser.Geom.Line(1000, 700, 1300, 700),
-            new Phaser.Geom.Line(850, 800, 1400, 800),
-            new Phaser.Geom.Line(850, 400, 850, 800),
-            new Phaser.Geom.Line(1000, 250, 1000, 700),
-            new Phaser.Geom.Line(500, 250, 1000, 250),
-            new Phaser.Geom.Line(650, 400, 850, 400),
-            new Phaser.Geom.Line(650, 400, 650, 800),
-            new Phaser.Geom.Line(500, 250, 500, 700),
-            new Phaser.Geom.Line(150, 700, 500, 700),
-            new Phaser.Geom.Line(10, 800, 650, 800),
-            new Phaser.Geom.Line(10, 10, 10, 800),
-            new Phaser.Geom.Line(150, 10, 150, 700),
-            new Phaser.Geom.Line(10, 10, 150, 10),
-        ];
-
-        var checkpoints = [
-            new Phaser.Geom.Line(300, 20, 300, 140),
-            new Phaser.Geom.Line(400, 20, 400, 140),
-            new Phaser.Geom.Line(500, 20, 500, 140),
-            new Phaser.Geom.Line(600, 20, 600, 140),
-            new Phaser.Geom.Line(700, 20, 700, 140),
-            new Phaser.Geom.Line(800, 20, 800, 140),
-            new Phaser.Geom.Line(900, 20, 900, 140),
-            new Phaser.Geom.Line(1000, 20, 1000, 140),
-            new Phaser.Geom.Line(1100, 20, 1100, 140),
-            new Phaser.Geom.Line(1200, 20, 1200, 140),
-            new Phaser.Geom.Line(1300, 20, 1300, 140),
-
-            new Phaser.Geom.Line(1310, 150, 1390, 150),
-            new Phaser.Geom.Line(1310, 200, 1390, 200),
-            new Phaser.Geom.Line(1310, 250, 1390, 250),
-            new Phaser.Geom.Line(1310, 350, 1390, 350),
-            new Phaser.Geom.Line(1310, 450, 1390, 450),
-            new Phaser.Geom.Line(1310, 550, 1390, 550),
-            new Phaser.Geom.Line(1310, 650, 1390, 650),
-
-            new Phaser.Geom.Line(1300, 710, 1300, 790),
-            new Phaser.Geom.Line(1200, 710, 1200, 790),
-            new Phaser.Geom.Line(1100, 710, 1100, 790),
-            new Phaser.Geom.Line(1000, 710, 1000, 790),
-
-            new Phaser.Geom.Line(860, 700, 990, 700),
-            new Phaser.Geom.Line(860, 600, 990, 600),
-            new Phaser.Geom.Line(860, 500, 990, 500),
-            new Phaser.Geom.Line(860, 400, 990, 400),
-
-            new Phaser.Geom.Line(850, 260, 850, 390),
-            new Phaser.Geom.Line(750, 260, 750, 390),
-            new Phaser.Geom.Line(650, 260, 650, 390),
-
-            new Phaser.Geom.Line(510, 400, 640, 400),
-            new Phaser.Geom.Line(510, 500, 640, 500),
-            new Phaser.Geom.Line(510, 600, 640, 600),
-            new Phaser.Geom.Line(510, 700, 640, 700),
-
-            new Phaser.Geom.Line(500, 710, 500, 790),
-            new Phaser.Geom.Line(400, 710, 400, 790),
-            new Phaser.Geom.Line(300, 710, 300, 790),
-            new Phaser.Geom.Line(200, 710, 200, 790),
-
-            new Phaser.Geom.Line(20, 700, 140, 700),
-            new Phaser.Geom.Line(20, 600, 140, 600),
-            new Phaser.Geom.Line(20, 500, 140, 500),
-            new Phaser.Geom.Line(20, 400, 140, 400),
-            new Phaser.Geom.Line(20, 300, 140, 300),
-            new Phaser.Geom.Line(20, 200, 140, 200),
-            new Phaser.Geom.Line(20, 100, 140, 100),
-        ];
+        var walls = this.map.draw1();
+        var finishLine = this.map.drawFinishLine();
 
         var keyUp;
         var keyDown;
@@ -206,32 +138,40 @@ export default class PlaygroundService {
             });
 
             graphics.lineStyle(1, 0xffff00);
-            checkpoints.forEach(checkpoint => {
-                graphics.strokeLineShape(checkpoint);
-            });
+            graphics.strokeLineShape(finishLine);
 
             drawActor();
 
+            var currentDistance = Phaser.Math.Distance.Between(actors[0].x, actors[0].y, finishLine.x1, finishLine.y2 - (finishLine.y2 - finishLine.y1) / 2);
+            var maxDistance = Phaser.Math.Distance.Between(225, 80, finishLine.x1, finishLine.y2 - (finishLine.y2 - finishLine.y1) / 2);
+
             text.setText(
-                `Checkpoints: ${actors[0].fitness}|Alive:${actors[0].isAlive}\n` +
+                `${1 - currentDistance/maxDistance} Checkpoints: ${actors[0].fitness}|Alive:${actors[0].isAlive}\n` +
                 actors[0].sensors.map(sensor => `${sensor.toString()}`).join("\n"));
 
             hangleKeyboardInputs();
             countCheckpoints()
         }
 
-        function countCheckpoints() {
-            for (let index = 0; index < checkpoints.length; index++) {
-                const checkpoint = checkpoints[index];
+        function getDistance() {
+            var currentDistance = Phaser.Math.Distance.Between(actors[0].x, actors[0].y, finishLine.x1, finishLine.y1);
+            var maxDistance = Phaser.Math.Distance.Between(225, 80, finishLine.x1, finishLine.y1);
 
-                for (let j = 0; j < actors.length; j++) {
-                    const actor = actors[j];
-                    if (Phaser.Geom.Intersects.LineToCircle(checkpoint, actor.actorObject)) {
-                        actor.fitness = (index + 1) / checkpoints.length;
-                        break;
-                    }
-                }
-            }
+            return currentDistance;//1 - (currentDistance / maxDistance);
+        }
+
+        function countCheckpoints() {
+            // for (let index = 0; index < checkpoints.length; index++) {
+            //     const checkpoint = checkpoints[index];
+
+            //     for (let j = 0; j < actors.length; j++) {
+            //         const actor = actors[j];
+            //         if (Phaser.Geom.Intersects.LineToCircle(checkpoint, actor.actorObject)) {
+            //             actor.fitness = (index + 1) / checkpoints.length;
+            //             break;
+            //         }
+            //     }
+            // }
         }
 
         function getDistance(d) {
@@ -240,11 +180,11 @@ export default class PlaygroundService {
 
         function hangleKeyboardInputs() {
 
-            actors.forEach(actor => {
-                if (actor.isAlive)
-                    angle(actor.id, actor.sensors.map(sensor => getDistance(sensor.collisionCoordinate.distance)));
-                actor.setSensorsPosition();
-            });
+            // actors.forEach(actor => {
+            //     if (actor.isAlive)
+            //         angle(actor.id, actor.sensors.map(sensor => getDistance(sensor.collisionCoordinate.distance)));
+            //     actor.setSensorsPosition();
+            // });
 
             if (keyUp.isDown) {
                 // actors.forEach(actor => {
