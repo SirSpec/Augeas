@@ -19,7 +19,7 @@ export default class Map {
 
         var secondEndX = this.centerStartX + distance;
         var secondEndY = this.centerStartY + this.width / 2;
-        
+
         var firstLine = new Phaser.Geom.Line(firstStartX, firstStartY, firstEndX, firstEndY);
         Phaser.Geom.Line.SetToAngle(firstLine, firstStartX, firstStartY, angle * Math.PI / 180, distance);
 
@@ -35,8 +35,12 @@ export default class Map {
         ];
     }
 
-    draw1() {
-        var output = [];
+    getWalls() {
+        var output = [
+            new Phaser.Geom.Line(
+                this.centerStartX, this.centerStartY - this.width / 2,
+                this.centerStartX, this.centerStartX + this.width / 2)
+        ];
         output.push(...this.getCorridor(200, 0));
         output.push(...this.getCorridor(200, 45));
         output.push(...this.getCorridor(200, -35));
