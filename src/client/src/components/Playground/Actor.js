@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Sensor from './Sensor';
 
 export default class Actor {
     constructor(id, x, y, angle, actorObject, sensors) {
@@ -46,5 +47,16 @@ export default class Actor {
         this.sensors.forEach(sensor => {
             Phaser.Geom.Line.SetToAngle(sensor.sensorLine, this.x, this.y, sensor.getAngle(this.angle), sensor.width);
         });
+    }
+
+    static create(id) {
+        return new Actor(id, 225, 80, 0, new Phaser.Geom.Circle(null, null, 10), [
+            new Sensor("Sensor 1", -90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 2", -45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 3", -15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 4", 15, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 5", 45, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+            new Sensor("Sensor 6", 90, new Phaser.Geom.Line(), new Phaser.Geom.Circle(null, null, 10)),
+        ]);
     }
 }
