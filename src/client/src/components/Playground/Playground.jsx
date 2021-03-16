@@ -10,8 +10,8 @@ const Playground = () => {
         var playgroundService = new PlaygroundService(
             playgroundViewRef,
             canvasRef,
-            window.innerWidth * 0.8,
-            window.innerHeight * 0.98);
+            window.innerWidth * 0.98,
+            window.innerHeight * 0.97);
 
         playgroundService.initialize();
     }, []);
