@@ -56,7 +56,7 @@ export default class PlaygroundService {
         }
 
         connection.start()
-            .then(() => console.log("Sudoku component connection started."))
+            .then(() => console.log("Hermes client connection started."))
             .catch(error => console.log(error));
 
         var graphics;
@@ -161,19 +161,7 @@ export default class PlaygroundService {
                 calculateFitness(actor);
             });
 
-            var allDead = false;
-            for (let index = 0; index < actors.length; index++) {
-                const actor = actors[index];
-                if (actor.isAlive === false) {
-                    allDead = true;
-                }
-                else {
-                    allDead = false;
-                    break;
-                }
-            }
-
-            if (allDead) generateNewPopulation();
+            if (actors.every(actor => !actor.isAlive)) generateNewPopulation();
         }
 
         function drawActor(actor) {
