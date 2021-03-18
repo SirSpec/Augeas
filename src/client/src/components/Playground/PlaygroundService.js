@@ -3,6 +3,8 @@ import * as signalR from "@microsoft/signalr"
 import Actor from './Actor';
 import Map from './Map';
 
+import Configuration from "./Configuration"
+
 export default class PlaygroundService {
     constructor(playgroundViewRef, canvasRef, width, height) {
         this.playgroundViewRef = playgroundViewRef;
@@ -20,7 +22,7 @@ export default class PlaygroundService {
         var yellow = "#ffff00";
 
         var connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:5001/hub")
+            .withUrl(Configuration.HubUrl)
             .build();
 
         connection.on("ReceiveNewPopulation", () => {
