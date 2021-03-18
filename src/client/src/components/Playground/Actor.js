@@ -16,6 +16,13 @@ export default class Actor {
         this.setSensorsPosition();
     }
 
+    resetToPosition(x, y) {
+        this.rotate(0);
+        this.setPosition(x, y);
+        this.isAlive = true;
+        this.fitness = 0;
+    }
+
     setPosition(x, y) {
         this.x = x;
         this.y = y;
