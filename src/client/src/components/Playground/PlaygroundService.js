@@ -20,6 +20,8 @@ export default class PlaygroundService {
         var green = 0x00ff00;
         var red = 0xff0000;
         var yellow = "#ffff00";
+        var startX = 225;
+        var startY = 80;
 
         var connection = new signalR.HubConnectionBuilder()
             .withUrl(Configuration.HubUrl)
@@ -27,15 +29,12 @@ export default class PlaygroundService {
 
         connection.on("ReceiveNewPopulation", () => {
             actors.forEach(actor => {
-                actor.rotate(0);
-                actor.setPosition(225, 80);
-                actor.isAlive = true;
-                actor.fitness = 0;
+                actor.resetToPosition(startX, startY)
             });
         });
 
         connection.on("ReceiveAngle", (id, angle) => {
-            actors[id].angle = angle * 180;
+            actors[id].rotate(angle * 180);
             actors[id].translateActor(new Phaser.Math.Vector2(1, 1));
         });
 
@@ -67,7 +66,7 @@ export default class PlaygroundService {
         var walls = this.map.getWalls();
         var finishLine = this.map.drawFinishLine();
         var maxDistance = Phaser.Math.Distance.Between(
-            225, 80,
+            startX, startY,
             finishLine.x1, finishLine.y2 - (finishLine.y2 - finishLine.y1) / 2);
 
         var keySpace;
@@ -111,7 +110,7 @@ export default class PlaygroundService {
 
         function update() {
             drawMap();
-            calculateCollisionPoints();
+            updateSimulation();
             hangleKeyboardInputs();
         }
 
@@ -131,36 +130,39 @@ export default class PlaygroundService {
                 actors[0].sensors.map(sensor => `${sensor.toString()}`).join("\n"));
         }
 
-        function calculateCollisionPoints() {
+        function updateSimulation() {
             graphics.lineStyle(2, red);
 
             actors.forEach(actor => {
-                if (actor.isAlive)
+                if (actor.isAlive) {
                     angle(actor.id, actor.sensors.map(sensor => sensor.collisionCoordinate?.distance ?? 1.0));
-                actor.setSensorsPosition();
 
-                for (let index = 0; index < actor.sensors.length; index++) {
-                    const sensor = actor.sensors[index];
+                    for (let index = 0; index < actor.sensors.length; index++) {
+                        const sensor = actor.sensors[index];
 
-                    for (let index = 0; index < walls.length; index++) {
-                        const wall = walls[index];
+                        for (let index = 0; index < walls.length; index++) {
+                            const wall = walls[index];
 
-                        if (actor.isAlive && Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject)) {
-                            actor.isAlive = false;
-                            setFitness(actor.id, actor.fitness);
+                            if (actor.isAlive) {
+                                if (Phaser.Geom.Intersects.LineToCircle(wall, actor.actorObject)) {
+                                    actor.isAlive = false;
+                                    setFitness(actor.id, actor.fitness);
+                                    break;
+                                }
+
+                                var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
+                                if (intersection?.z <= 1) {
+                                    sensor.setCollision(intersection?.x, intersection?.y, intersection?.z)
+                                    graphics.strokeCircleShape(sensor.collisionCircle);
+                                    break;
+                                } else sensor.reset();
+                            }
                         }
-
-                        var intersection = Phaser.Geom.Intersects.GetLineToLine(sensor.sensorLine, wall);
-                        if (intersection?.z <= 1) {
-                            sensor.setCollision(intersection?.x, intersection?.y, intersection?.z)
-                            graphics.strokeCircleShape(sensor.collisionCircle);
-                            break;
-                        } else sensor.reset();
                     }
-                }
 
+                    actor.fitness = calculateFitness(actor);
+                }
                 drawActor(actor);
-                calculateFitness(actor);
             });
 
             if (actors.every(actor => !actor.isAlive)) generateNewPopulation();
@@ -176,8 +178,9 @@ export default class PlaygroundService {
         function calculateFitness(actor) {
             var currentDistance = Phaser.Math.Distance.Between(
                 actor.x, actor.y,
-                finishLine.x1, finishLine.y2 - (finishLine.y2 - finishLine.y1) / 2);
-            actor.fitness = 1 - currentDistance / maxDistance;
+                finishLine.x1, (finishLine.y2 + finishLine.y1) / 2);
+
+            return 1 - currentDistance / maxDistance;
         }
 
         function hangleKeyboardInputs() {
