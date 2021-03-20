@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
+namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection
 {
     public class ElitismSelection : ISelectionAlgorithm
     {
@@ -10,7 +11,7 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
         public ElitismSelection(int numberOfSelectedPhenotypes) =>
             this.numberOfSelectedPhenotypes = numberOfSelectedPhenotypes;
 
-        public IEnumerable<Phenotype<T>> Select<T>(IEnumerable<Phenotype<T>> phenotypes) =>
+        public IEnumerable<Phenotype<TAllele>> Select<TAllele>(IEnumerable<Phenotype<TAllele>> phenotypes) =>
             phenotypes
                 .OrderByDescending(phenotype => phenotype.Fitness)
                 .Take(numberOfSelectedPhenotypes);
