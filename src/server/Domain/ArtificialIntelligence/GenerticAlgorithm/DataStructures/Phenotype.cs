@@ -8,7 +8,7 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
         public Phenotype(Genotype<TAllele> genotype) =>
             Genotype = genotype;
 
-        public Genotype<TAllele> Genotype { get; }
+        public Genotype<TAllele> Genotype { get; set; }
         public double Fitness { get; set; }
 
         public IEnumerable<Gene<TAllele>> FlattenGenes =>
