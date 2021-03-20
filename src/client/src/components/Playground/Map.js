@@ -48,6 +48,8 @@ export default class Map {
         output.push(...this.getCorridor(300, 45));
         output.push(...this.getCorridor(260, 20));
         output.push(...this.getCorridor(150, 0));
+        output.push(...this.getCorridor(300, -45));
+        output.push(...this.getCorridor(150, 45));
 
         return output;
     }
@@ -76,6 +78,6 @@ export default class Map {
     }
 
     drawFinishLine() {
-        return new Phaser.Geom.Line(1400, 350, 1400, 500);
+        return new Phaser.Geom.Line(1725, 250, 1725, 400);
     }
 }
