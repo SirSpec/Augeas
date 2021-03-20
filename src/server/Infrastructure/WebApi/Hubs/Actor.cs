@@ -1,5 +1,5 @@
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
 
 namespace Hermes.Infrastructure.WebApi
@@ -16,12 +16,12 @@ namespace Hermes.Infrastructure.WebApi
             return NeuralNetwork.Comput(inputs).Single();
         }
 
-        public void SetWeights(Genotype<double> genotype)
+        public void SetWeights(Phenotype<double> phenotype)
         {
-            var g = genotype.Genes.SelectMany(ge => ge).ToArray();
-            for (int i = 0; i < g.Length; i++)
+            var genes = phenotype.FlattenGenes.ToArray();
+            for (int i = 0; i < genes.Length; i++)
             {
-                NeuralNetwork.SetWeight(i, g[i].Allele);
+                NeuralNetwork.SetWeight(i, genes[i].Allele);
             }
         }
     }
