@@ -29,5 +29,8 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
 
         public Phenotype<TAllele> Fittest =>
             phenotypes.OrderByDescending(phenotype => phenotype.Fitness).First();
+
+        public Phenotype<TAllele> this[int index] =>
+            phenotypes[index];
     }
 }
