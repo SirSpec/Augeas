@@ -1,22 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Crossover;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Termination;
 
 namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
     // https://en.wikipedia.org/wiki/Genetic_algorithm
-    public class GenerticAlgorithmEngine<T>
+    public class GenerticAlgorithmEngine<TAllele>
     {
         private readonly IFitnessFunction fitnessFunction;
         private readonly ISelectionAlgorithm selectionAlgorithm;
-        private readonly ICrossoverOperator crossoverOperator; //Alterer operators
-        private readonly IMutationOperator<T> mutationOperator;
+        private readonly ICrossoverOperator crossoverOperator;
+        private readonly IMutationOperator<TAllele> mutationOperator;
         private readonly ITerminationAlgorithm terminationAlgorithm;
 
         public GenerticAlgorithmEngine(
             IFitnessFunction fitnessFunction,
             ISelectionAlgorithm selectionAlgorithm,
             ICrossoverOperator crossoverOperator,
-            IMutationOperator<T> mutationOperator,
+            IMutationOperator<TAllele> mutationOperator,
             ITerminationAlgorithm terminationAlgorithm)
         {
             this.fitnessFunction = fitnessFunction;
@@ -36,10 +41,10 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
         //     Compute fitness
         // UNTIL population has converged
         // STOP
-        // public Phenotype<T> Evolve(Population<T> population2)
+        // public Phenotype<TAllele> Evolve(Population<TAllele> population2)
         // {
         //     //initialize population
-        //     var population = population2; //new Population<T>(0, new Phenotype<T>(fitnessFunction, new Genotype<T>(), 0));
+        //     var population = population2; //new Population<TAllele>(0, new Phenotype<TAllele>(fitnessFunction, new Genotype<TAllele>(), 0));
 
         //     //find fitness of population
         //     foreach (var phenotype in population.Phenotypes)
@@ -51,7 +56,7 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
         //     {
         //         var parents = selectionAlgorithm.Select(population.Phenotypes);
 
-        //         var offsprings = new List<Phenotype<T>>();
+        //         var offsprings = new List<Phenotype<TAllele>>();
 
         //         foreach (var pair in parents)
         //         {
@@ -72,42 +77,50 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
         //     return population.Fittest;
         // }
 
-        public IEnumerable<(Phenotype<T> f, Phenotype<T> s)> GetPair(Phenotype<T>[] parents)
+        public Population<TAllele> GenerateNewPopulation(Population<TAllele> population)
         {
-            for (int i = 0; i < parents.Length - 1; i += 2)
+            var parents = selectionAlgorithm.Select(population.Phenotypes);
+            var offspring = GenerateOffspring(parents);
+            var survivors = SelectSurvivors(parents, offspring);
+
+            return new Population<TAllele>(
+                survivors,
+                population.Generation + 1
+            );
+        }
+
+        private IEnumerable<Phenotype<TAllele>> GenerateOffspring(IEnumerable<Phenotype<TAllele>> parents)
+        {
+            var newOffspring = new List<Phenotype<TAllele>>();
+
+            foreach (var pairedParents in GetPair(parents))
             {
-                yield return (parents[i], parents[i + 1]);
+                var offspring = crossoverOperator.Crossover(pairedParents);
+
+                foreach (var child in offspring)
+                    child.Genotype = mutationOperator.GetMutation(child.Genotype);
+
+                newOffspring.AddRange(offspring);
+            }
+
+            return newOffspring;
+        }
+
+        public IEnumerable<IEnumerable<Phenotype<TAllele>>> GetPair(IEnumerable<Phenotype<TAllele>> parents)
+        {
+            for (int i = 0; i < parents.Count() - 1; i += 2)
+            {
+                yield return new[] {
+                    parents.ElementAt(i), parents.ElementAt(i + 1)
+                };
             }
         }
 
-        public Population<T> Generate(Population<T> population)
+        private IEnumerable<Phenotype<TAllele>> SelectSurvivors(IEnumerable<Phenotype<TAllele>> parents, IEnumerable<Phenotype<TAllele>> newOffspring)
         {
-            var newPopulation = population;
-
-            while (terminationAlgorithm.TerminationConditionReached(newPopulation) is false)
-            {
-                var parents = selectionAlgorithm.Select(newPopulation.Phenotypes);
-
-                var newOffspring = new List<Phenotype<T>>();
-
-                foreach (var pair in GetPair(parents.ToArray()))
-                {
-                    var offspring = crossoverOperator.Crossover(new[] { pair.f, pair.s });
-                    offspring = offspring.Select(mutationOperator.Mutate);
-                    newOffspring.AddRange(offspring);
-                }
-
-                var survivors = parents.Concat(newOffspring)
-                    .Take(10)
-                    .ToArray();
-
-                return new Population<T>(
-                    population.Generation + 1,
-                    survivors
-                );
-            }
-
-            return population;
+            return parents.Concat(newOffspring)
+                .Take(10)
+                .ToArray();
         }
     }
 }
