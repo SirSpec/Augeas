@@ -25,5 +25,12 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
             get => genes[index].Allele;
             set => genes[index].Allele = value;
         }
+
+        public Chromosome<TAllele> DeepCopy()
+        {
+            return new Chromosome<TAllele>(
+                genes.Select(gene => new Gene<TAllele>(gene.Allele))
+            );
+        }
     }
 }
