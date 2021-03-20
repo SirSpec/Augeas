@@ -1,24 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Hermes.Infrastructure.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Hermes.Infrastructure.WebApi
 {
     public class Startup
     {
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration) =>
+            this.configuration = configuration;
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<SimulatorHubOptions>(
+                configuration.GetSection(SimulatorHubOptions.SimulatorHub));
+
             services.AddCors();
             services.AddSignalR();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IOptions<SimulatorHubOptions> simulatorHubOptions)
         {
             if (env.IsDevelopment())
             {
@@ -26,7 +36,7 @@ namespace Hermes.Infrastructure.WebApi
             }
 
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:3000")
+                builder.WithOrigins(simulatorHubOptions.Value.Url)
                     .AllowAnyHeader()
                     .WithMethods("GET", "POST")
                     .AllowCredentials()
@@ -41,7 +51,7 @@ namespace Hermes.Infrastructure.WebApi
                     await context.Response.WriteAsync("Hermes");
                 });
 
-                endpoints.MapHub<CarHub>("/hub");
+                endpoints.MapHub<SimulatorHub>("/hub");
             });
         }
     }
