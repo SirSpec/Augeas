@@ -1,6 +1,7 @@
 using System.Linq;
+using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
+namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Termination
 {
     public class FitnessValueTermination : ITerminationAlgorithm
     {
@@ -9,7 +10,7 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
         public FitnessValueTermination(double fitnessTerminationValue) =>
             this.fitnessTerminationValue = fitnessTerminationValue;
 
-        public bool TerminationConditionReached<T>(Population<T> population) =>
+        public bool TerminationConditionReached<TAllele>(Population<TAllele> population) =>
             population.Phenotypes.Any(phenotype => phenotype.Fitness == fitnessTerminationValue);
     }
 }
