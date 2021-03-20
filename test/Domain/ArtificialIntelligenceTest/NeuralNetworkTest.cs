@@ -16,7 +16,7 @@ namespace ArtificialIntelligenceTest
             return neuron;
         }
 
-        public Neuron GetNeuron(INeuron[] connected, double[] weight )
+        public Neuron GetNeuron(INeuron[] connected, double[] weight)
         {
             var func = new BinaryStepFunction(0.0);
             var sum = new WeightedSumFunction();
@@ -30,7 +30,7 @@ namespace ArtificialIntelligenceTest
 
         [Fact]
         public void Test()
-        {            
+        {
             var w1 = new[] { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
             var a = new InputLayer(
@@ -63,7 +63,7 @@ namespace ArtificialIntelligenceTest
                     );
 
             var neural = new NeuralNetwork(
-                a, new[] {b}, c
+                a, new[] { b }, c
             );
 
             var output = neural.Comput(new double[6] { 1.0, 0.7, 0.5, 0.3, 1.0, 1.0 });
