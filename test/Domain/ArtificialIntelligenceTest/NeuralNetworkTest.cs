@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hermes.Domain.ArtificialIntelligence;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
+using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
 using Xunit;
 
 namespace ArtificialIntelligenceTest
