@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
+using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
 
 namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
