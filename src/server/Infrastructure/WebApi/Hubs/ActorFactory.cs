@@ -9,6 +9,13 @@ namespace Hermes.Infrastructure.WebApi
 {
     public class ActorFactory
     {
+        public static Actor GetActor2()
+        {
+            var build = new NeuralNetworkBuilder();
+
+            return new Actor(build.Build(6, 1, 2));
+        }
+
         public static Actor GetActor()
         {
             var inputLayer = new InputLayer(
