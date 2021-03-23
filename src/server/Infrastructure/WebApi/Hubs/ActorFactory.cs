@@ -9,52 +9,11 @@ namespace Hermes.Infrastructure.WebApi
 {
     public class ActorFactory
     {
-        public static Actor GetActor2()
+        public static Actor GetActor()
         {
             var build = new NeuralNetworkBuilder();
 
             return new Actor(build.Build(6, 1, 2));
-        }
-
-        public static Actor GetActor()
-        {
-            var inputLayer = new InputLayer(
-                new InputNeuron(),
-                new InputNeuron(),
-                new InputNeuron(),
-                new InputNeuron(),
-                new InputNeuron(),
-                new InputNeuron()
-            );
-
-            var hiddenLayer1 = new NeuralLayer(
-                GetNeuron(inputLayer.Neurons, RandomWeight(6)),
-                GetNeuron(inputLayer.Neurons, RandomWeight(6)),
-                GetNeuron(inputLayer.Neurons, RandomWeight(6)),
-                GetNeuron(inputLayer.Neurons, RandomWeight(6))
-            );
-
-            var hiddenLayer2 = new NeuralLayer(
-                GetNeuron(hiddenLayer1.Neurons, RandomWeight(4)),
-                GetNeuron(hiddenLayer1.Neurons, RandomWeight(4)),
-                GetNeuron(hiddenLayer1.Neurons, RandomWeight(4))
-            );
-
-            var outputLayer = new OutputLayer(
-                GetNeuron(hiddenLayer2.Neurons, RandomWeight(3))
-            );
-
-            return new Actor(
-                new NeuralNetwork(
-                    inputLayer,
-                    new NeuralLayer[2]
-                    {
-                        hiddenLayer1,
-                        hiddenLayer2
-                    },
-                    outputLayer
-                )
-            );
         }
 
         private static IEnumerable<double> RandomWeight(int size)
