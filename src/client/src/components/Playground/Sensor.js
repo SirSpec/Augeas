@@ -18,7 +18,6 @@ export default class Sensor {
     setCollision(x, y, distance) {
         if (x && y && distance) {
             this.collisionCoordinate.set(x, y, distance);
-            // this.width = this.defaultWidth * distance;
             this.collisionCircle.setPosition(this.collisionCoordinate.x, this.collisionCoordinate.y);
         }
     }
