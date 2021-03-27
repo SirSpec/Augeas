@@ -4,16 +4,16 @@ using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
 namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection
 {
-    public class ElitismSelection : ISelectionAlgorithm
-    {
-        private readonly int numberOfSelectedPhenotypes;
+	public class ElitismSelection : ISelectionAlgorithm
+	{
+		private readonly int numberOfSelectedPhenotypes;
 
-        public ElitismSelection(int numberOfSelectedPhenotypes) =>
-            this.numberOfSelectedPhenotypes = numberOfSelectedPhenotypes;
+		public ElitismSelection(int numberOfSelectedPhenotypes) =>
+			this.numberOfSelectedPhenotypes = numberOfSelectedPhenotypes;
 
-        public IEnumerable<Phenotype<TAllele>> Select<TAllele>(IEnumerable<Phenotype<TAllele>> phenotypes) =>
-            phenotypes
-                .OrderByDescending(phenotype => phenotype.Fitness)
-                .Take(numberOfSelectedPhenotypes);
-    }
+		public IEnumerable<Phenotype<TAllele>> Select<TAllele>(IEnumerable<Phenotype<TAllele>> phenotypes) =>
+			phenotypes
+				.OrderByDescending(phenotype => phenotype.Fitness)
+				.Take(numberOfSelectedPhenotypes);
+	}
 }
