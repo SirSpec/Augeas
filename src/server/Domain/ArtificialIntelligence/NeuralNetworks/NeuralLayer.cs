@@ -1,12 +1,12 @@
 namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
-    public class NeuralLayer
-    {
-        public Neuron[] Neurons { get; }
+	public class NeuralLayer
+	{
+		public Neuron[] Neurons { get; }
 
-        public NeuralLayer(params Neuron[] neurons)
-        {
-            Neurons = neurons;
-        }
-    }
+		public NeuralLayer(params Neuron[] neurons)
+		{
+			Neurons = neurons;
+		}
+	}
 }

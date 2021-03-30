@@ -1,9 +1,9 @@
 namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
-    public class InputNeuron : INeuron
-    {
-        public double Input { get; set; }
+	public class InputNeuron : INeuron
+	{
+		public double Input { get; set; }
 
-        public double Output => Input;
-    }
+		public double Output => Input;
+	}
 }
