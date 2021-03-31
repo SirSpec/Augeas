@@ -1,8 +1,8 @@
 ﻿namespace Hermes.Domain.ArtificialIntelligence
 {
-    public interface IRandomNumberEngine
-    {
-        int RandomInteger(ConstraintRange<int> constraint);
-        double RandomDouble(ConstraintRange<double> constraint);
-    }
+	public interface IRandomNumberEngine
+	{
+		int RandomInteger(ConstraintRange<int> constraint);
+		double RandomDouble(ConstraintRange<double> constraint);
+	}
 }
