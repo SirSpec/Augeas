@@ -8,14 +8,14 @@ using Xunit;
 
 namespace ArtificialIntelligenceTest
 {
-    public class NeuralNetworkTest
-    {
-        [Fact]
-        public void Test()
-        {
-            var w1 = new NeuralNetworkBuilder();
+	public class NeuralNetworkTest
+	{
+		[Fact]
+		public void Test()
+		{
+			var w1 = new NeuralNetworkBuilder();
 
-            var n = w1.Build(6, 1, 2);
-        }
-    }
+			var n = w1.Build(6, 1, 2);
+		}
+	}
 }
