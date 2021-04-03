@@ -7,11 +7,11 @@ const config = require('./webpack.config.js');
 const compiler = webpack(config);
 
 app.use(
-    webpackDevMiddleware(compiler, {
-        publicPath: config.output.publicPath,
-    })
+	webpackDevMiddleware(compiler, {
+		publicPath: config.output.publicPath,
+	})
 );
 
 app.listen(3000, function () {
-    console.log('Hermes client app listening on port 3000.');
+	console.log('Hermes client app listening on port 3000.');
 });

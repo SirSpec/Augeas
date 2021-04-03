@@ -8,9 +8,9 @@ import store from "./store"
 const root = document.getElementById("root")
 
 if (root) {
-    ReactDOM.render(
-        <Provider store={store}>
-            <App />
-        </Provider>,
-        root)
+	ReactDOM.render(
+		<Provider store={store}>
+			<App />
+		</Provider>,
+		root)
 }
