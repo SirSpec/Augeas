@@ -16,24 +16,29 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 			this.outputLayer = outputLayer;
 		}
 
+		public IEnumerable<Connection> AllConnections
+		{
+			get
+			{
+				var hiddenLayerConnections = hiddenLayers
+					.SelectMany(layer => layer.Neurons)
+					.SelectMany(neuron => neuron.Inputs);
+
+				var outputLayerConnections = outputLayer
+					.Neurons
+					.SelectMany(neuron => neuron.Inputs);
+
+				return hiddenLayerConnections.Concat(outputLayerConnections);
+			}
+		}
+
+		public Connection GetConnection(string id) =>
+			AllConnections.Single(connection => connection.NeuronId == id);
+
 		public IEnumerable<double> Comput(double[] inputs)
 		{
 			inputLayer.PushInputs(inputs);
-			return outputLayer.Outputs;
-		}
-
-		public IEnumerable<double> GetWeights()
-		{
-			var connections = hiddenLayers.SelectMany(h => h.Neurons).SelectMany(n => n.inputs).Concat(outputLayer.neurons.SelectMany(n => n.inputs)).ToArray();
-
-			return connections.Select(c => c.Weight);
-		}
-
-		public void SetWeight(int i, double g)
-		{
-			var connections = hiddenLayers.SelectMany(h => h.Neurons).SelectMany(n => n.inputs).Concat(outputLayer.neurons.SelectMany(n => n.inputs)).ToArray();
-
-			connections[i].Weight = g;
+			return outputLayer.Neurons.Select(neuron => neuron.Output);
 		}
 	}
 }
