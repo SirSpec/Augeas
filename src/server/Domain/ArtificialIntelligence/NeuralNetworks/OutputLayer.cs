@@ -1,18 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
-	public class OutputLayer
+	public class OutputLayer : NeuralLayer
 	{
-		public readonly Neuron[] neurons;
-
-		public OutputLayer(params Neuron[] neurons)
+		public OutputLayer(params Neuron[] neurons) : base(neurons)
 		{
-			this.neurons = neurons;
 		}
-
-		public IEnumerable<double> Outputs =>
-			neurons.Select(neuron => neuron.Output);
 	}
 }
