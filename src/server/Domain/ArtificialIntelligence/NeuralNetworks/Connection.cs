@@ -4,13 +4,18 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 	{
 		private readonly INeuron connectedNeuron;
 
+		public double Weight { get; set; }
+
 		public Connection(INeuron connectedNeuron, double weight)
 		{
 			this.connectedNeuron = connectedNeuron;
 			Weight = weight;
 		}
 
-		public double Value => connectedNeuron.Output;
-		public double Weight { get; set; }
+		public string Id =>
+			connectedNeuron.Id;
+
+		public double Value =>
+			connectedNeuron.Output;
 	}
 }
