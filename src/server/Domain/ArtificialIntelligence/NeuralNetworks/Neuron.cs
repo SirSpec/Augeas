@@ -37,10 +37,10 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 
 		public void AddInput(Connection connection)
 		{
-			if (Inputs.All(input => input.Id != connection.Id))
+			if (Inputs.All(input => input.NeuronId != connection.NeuronId))
 				inputs.Add(connection);
 			else throw new ArgumentException(
-				$"{nameof(inputs)} set cannot contain duplicated connection id:{connection.Id}.");
+				$"{nameof(inputs)} set cannot contain duplicated connection id:{connection.NeuronId}.");
 		}
 
 		private double Activation =>
