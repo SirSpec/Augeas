@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
 
@@ -8,28 +10,40 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 	{
 		private readonly IPropagationFunction propagationFunction;
 		private readonly IActivationFunction activationFunction;
-		public readonly IList<Connection> inputs;
+		private readonly IList<Connection> inputs;
 		private readonly double bias;
 
+		public string Id { get; }
+
 		public Neuron(
+			string id,
 			IPropagationFunction propagationFunction,
 			IActivationFunction activationFunction,
 			IList<Connection> inputs,
 			double bias)
 		{
+			Id = id;
 			this.propagationFunction = propagationFunction;
 			this.activationFunction = activationFunction;
-			this.bias = bias;
 			this.inputs = inputs;
+			this.bias = bias;
 		}
 
-		public double Output => activationFunction.CalculateOutput(Activation + bias);
+		public IEnumerable<Connection> Inputs =>
+			inputs;
+
+		public double Output =>
+			activationFunction.CalculateOutput(Activation + bias);
 
 		public void AddInput(Connection connection)
 		{
-			inputs.Add(connection);
+			if (Inputs.All(input => input.Id != connection.Id))
+				inputs.Add(connection);
+			else throw new ArgumentException(
+				$"{nameof(inputs)} set cannot contain duplicated connection id:{connection.Id}.");
 		}
 
-		private double Activation => propagationFunction.CalculateInput(inputs);
+		private double Activation =>
+			propagationFunction.CalculateInput(inputs);
 	}
 }
