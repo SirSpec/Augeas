@@ -12,7 +12,7 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 			Weight = weight;
 		}
 
-		public string Id =>
+		public string NeuronId =>
 			connectedNeuron.Id;
 
 		public double Value =>
