@@ -43,7 +43,7 @@ namespace Hermes.Infrastructure.WebApi
 				ActorFactory.GetActor(),
 			};
 
-			var phenotypes = actors.Select(actor => actor.NeuralNetwork.GetWeights())
+			var phenotypes = actors.Select(actor => actor.NeuralNetwork.AllConnections.Select(c => c.Weight))
 				.Select(ws => new Phenotype<double>
 					(
 						new Genotype<double>(

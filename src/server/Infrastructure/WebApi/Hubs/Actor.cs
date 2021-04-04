@@ -19,9 +19,11 @@ namespace Hermes.Infrastructure.WebApi
 		public void SetWeights(Phenotype<double> phenotype)
 		{
 			var genes = phenotype.FlattenGenes.ToArray();
+			var connections = NeuralNetwork.AllConnections.ToArray();
+
 			for (int i = 0; i < genes.Length; i++)
 			{
-				NeuralNetwork.SetWeight(i, genes[i].Allele);
+				connections[i].Weight = genes[i].Allele;
 			}
 		}
 	}
