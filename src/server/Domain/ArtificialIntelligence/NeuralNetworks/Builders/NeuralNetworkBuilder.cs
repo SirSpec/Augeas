@@ -3,7 +3,7 @@ using System.Linq;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
 using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
+namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Builders
 {
 	public class NeuralNetworkBuilder
 	{
@@ -35,6 +35,7 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 
 			for (int i = 0; i < neurons; i++)
 				yield return new Neuron(
+				$"{i}",
 				new WeightedSumFunction(),
 				new HyperbolicTangentFunction(),
 				zipped
@@ -52,7 +53,7 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 		private IEnumerable<InputNeuron> BuildInputNeurons(int inputs)
 		{
 			for (int i = 0; i < inputs; i++)
-				yield return new InputNeuron();
+				yield return new InputNeuron(i.ToString());
 		}
 
 		private IEnumerable<NeuralLayer> BuildHiddrenLayer(int layers, InputLayer inputLayer)
