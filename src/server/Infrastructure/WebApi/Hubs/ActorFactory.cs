@@ -1,4 +1,4 @@
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
+using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Builders;
 
 namespace Hermes.Infrastructure.WebApi
 {
