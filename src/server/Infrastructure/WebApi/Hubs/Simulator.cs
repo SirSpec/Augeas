@@ -18,8 +18,8 @@ namespace Hermes.Infrastructure.WebApi
 		(
 			null!,
 			new ElitismSelection(6),
-			new UniformCrossover(range, 0.6),
-			new UniformMutation<double>(new RandomDoubleAlleleFactory(new ConstraintRange<double>(-1, 1)), range, 0.7),
+			new UniformCrossover(range, 0.3),
+			new UniformMutation<double>(new RandomDoubleAlleleFactory(new ConstraintRange<double>(-1, 1)), range, 0.3),
 			new FitnessValueTermination(1d)
 		);
 

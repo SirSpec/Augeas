@@ -118,8 +118,9 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 
 		private IEnumerable<Phenotype<TAllele>> SelectSurvivors(IEnumerable<Phenotype<TAllele>> parents, IEnumerable<Phenotype<TAllele>> newOffspring)
 		{
-			return parents.Concat(newOffspring)
-				.Take(10)
+			return parents
+				.Take(4)
+				.Concat(newOffspring.Take(6))
 				.ToArray();
 		}
 	}
