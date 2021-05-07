@@ -43,21 +43,17 @@ namespace Hermes.Infrastructure.WebApi
 				ActorFactory.GetActor(),
 			};
 
-			var phenotypes = actors.Select(actor => actor.NeuralNetwork.AllConnections.Select(c => c.Weight))
-				.Select(ws => new Phenotype<double>
-					(
+			population = new Population<double>(
+				actors.Select(actor =>
+					new Phenotype<double>(
 						new Genotype<double>(
-							new[] {
-								new Chromosome<double>
-								(
-									ws.Select(w => new Gene<double>(w)).ToArray()
-								)
-							}
+							actor.NeuralNetwork.Neurons.Select(neuron => new Chromosome<double>(
+								neuron.Inputs.Select(input => new Gene<double>(input.Weight))
+							))
 						)
 					)
 				)
-				.ToArray();
-			population = new Population<double>(phenotypes);
+			);
 		}
 
 		public double GetAngle(int index, double[] signals) =>

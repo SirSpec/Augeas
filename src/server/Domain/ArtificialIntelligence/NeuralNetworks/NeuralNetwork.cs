@@ -16,6 +16,11 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 			this.outputLayer = outputLayer;
 		}
 
+		public IEnumerable<Neuron> Neurons =>
+			hiddenLayers
+				.SelectMany(layer => layer.Neurons)
+				.Concat(outputLayer.Neurons);
+
 		public IEnumerable<Connection> AllConnections
 		{
 			get
@@ -31,9 +36,6 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 				return hiddenLayerConnections.Concat(outputLayerConnections);
 			}
 		}
-
-		public Connection GetConnection(string id) =>
-			AllConnections.Single(connection => connection.NeuronId == id);
 
 		public IEnumerable<double> Comput(double[] inputs)
 		{
