@@ -1,34 +1,41 @@
+using System;
 using System.Linq;
 
 namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 {
+	// https://en.wikipedia.org/wiki/Dope_vector
 	public record DopeVector
 	{
 		public int[] Shape { get; }
 		public int Length { get; }
 		public int Rank { get; }
-		public int[] Stride { get; }
+		public int[] Strides { get; }
 
-		public DopeVector(params int[] shape)
+		public DopeVector(int[] shape)
 		{
-			Shape = shape;
-			Rank = Shape.Length;
-			Length = Shape.Aggregate((accumulator, next) => accumulator * next);
-			Stride = CalculateContiguousStride(Shape);
+			if (shape.Length > 0 && shape.All(dimention => dimention > 0))
+			{
+				Shape = shape;
+				Rank = Shape.Length;
+				Length = Shape.Aggregate((accumulator, next) => accumulator * next);
+				Strides = CalculateContiguousStrides(Shape);
+			}
+			else throw new ArgumentException(
+				$"{nameof(shape)} is empty or contains non-positive dimension.");
 		}
 
-		private static int[] CalculateContiguousStride(int[] shape)
+		private static int[] CalculateContiguousStrides(int[] shape)
 		{
-			var acc = 1;
-			var stride = new int[shape.Length];
+			var currentStride = 1;
+			var strides = new int[shape.Length];
 
-			for (var i = shape.Length - 1; i >= 0; --i)
+			for (var i = shape.Length - 1; i >= 0; i--)
 			{
-				stride[i] = acc;
-				acc *= shape[i];
+				strides[i] = currentStride;
+				currentStride *= shape[i];
 			}
 
-			return stride;
+			return strides;
 		}
 	}
 }
