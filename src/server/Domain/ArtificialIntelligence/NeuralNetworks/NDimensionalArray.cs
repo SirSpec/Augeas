@@ -19,18 +19,18 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 			get
 			{
 				return indices.Length == DopeVector.Rank
-					? values[GetIndex(indices)]
+					? values[GetOffset(indices)]
 					: throw new ArgumentOutOfRangeException();
 			}
 			set
 			{
-				values[GetIndex(indices)] = indices.Length == DopeVector.Rank
+				values[GetOffset(indices)] = indices.Length == DopeVector.Rank
 					? value
 					: throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		private int GetIndex(params int[] indices)
+		private int GetOffset(params int[] indices)
 		{
 			var index = 0;
 
