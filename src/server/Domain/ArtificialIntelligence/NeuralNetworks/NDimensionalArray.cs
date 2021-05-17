@@ -20,13 +20,13 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 			{
 				return indices.Length == DopeVector.Rank
 					? values[GetOffset(indices)]
-					: throw new ArgumentOutOfRangeException();
+					: throw new ArgumentOutOfRangeException($"Rank of {nameof(indices)} is not equal: {DopeVector.Rank}.");
 			}
 			set
 			{
 				values[GetOffset(indices)] = indices.Length == DopeVector.Rank
 					? value
-					: throw new ArgumentOutOfRangeException();
+					: throw new ArgumentOutOfRangeException($"Rank of {nameof(indices)} is not equal: {DopeVector.Rank}.");
 			}
 		}
 
