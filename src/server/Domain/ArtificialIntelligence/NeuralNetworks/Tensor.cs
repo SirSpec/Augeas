@@ -31,139 +31,31 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 			}
 		}
 
-		// Element-wise operations
-		public static Tensor operator +(Tensor first, Tensor second)
+		public static Tensor operator +(Tensor first, Tensor second) =>
+			PerformElementWiseOperation(first, second, (firstValue, secondValue) => firstValue + secondValue);
+
+		public static Tensor operator -(Tensor first, Tensor second) =>
+			PerformElementWiseOperation(first, second, (firstValue, secondValue) => firstValue - secondValue);
+
+		public static Tensor operator *(Tensor first, Tensor second) =>
+			PerformElementWiseOperation(first, second, (firstValue, secondValue) => firstValue * secondValue);
+
+		public static Tensor operator /(Tensor first, Tensor second) =>
+			PerformElementWiseOperation(first, second, (firstValue, secondValue) => firstValue / secondValue);
+
+		private static Tensor PerformElementWiseOperation(Tensor first, Tensor second, Func<double, double, double> operation)
 		{
 			if (first.DopeVector.Rank == second.DopeVector.Rank)
 			{
 				var result = new Tensor(first.DopeVector.Shape);
 
-				for (int i = 0; i < first.DopeVector.Length; i++)
-					result.values[i] = first.values[i] + second.values[i];
+				for (int i = 0; i < result.DopeVector.Length; i++)
+					result.values[i] = operation(first.values[i], second.values[i]);
 
 				return result;
 			}
 			else throw new ArgumentException(
-				$"Inputs have different Ranks:{first.values.Rank}|{second.values.Rank}.");
-		}
-
-		public static Tensor operator -(Tensor first, Tensor second)
-		{
-			if (first.DopeVector.Rank == second.DopeVector.Rank)
-			{
-				var result = new Tensor(first.DopeVector.Shape);
-
-				for (int i = 0; i < first.DopeVector.Length; i++)
-					result.values[i] = first.values[i] - second.values[i];
-
-				return result;
-			}
-			else throw new ArgumentException(
-				$"Inputs have different Ranks:{first.values.Rank}|{second.values.Rank}.");
-		}
-
-		public static Tensor operator *(Tensor first, Tensor second)
-		{
-			if (first.DopeVector.Rank == second.DopeVector.Rank)
-			{
-				var result = new Tensor(first.DopeVector.Shape);
-
-				for (int i = 0; i < first.DopeVector.Length; i++)
-					result.values[i] = first.values[i] * second.values[i];
-
-				return result;
-			}
-			else throw new ArgumentException(
-				$"Inputs have different Ranks:{first.values.Rank}|{second.values.Rank}.");
-		}
-
-		public static Tensor operator /(Tensor first, Tensor second)
-		{
-			if (first.DopeVector.Rank == second.DopeVector.Rank)
-			{
-				var result = new Tensor(first.DopeVector.Shape);
-
-				for (int i = 0; i < first.DopeVector.Length; i++)
-					result.values[i] = first.values[i] / second.values[i];
-
-				return result;
-			}
-			else throw new ArgumentException(
-				$"Inputs have different Ranks:{first.values.Rank}|{second.values.Rank}.");
-		}
-
-
-
-		public static Tensor operator ==(Tensor first, Tensor second)
-		{
-			var result = new Tensor(first.DopeVector.Shape);
-
-			for (int i = 0; i < first.DopeVector.Length; i++)
-			{
-				result[i] = first[i] == second[i] ? 1 : 0;
-			}
-
-			return result;
-		}
-
-		public static Tensor operator !=(Tensor first, Tensor second)
-		{
-			var result = new Tensor(first.DopeVector.Shape);
-
-			for (int i = 0; i < first.DopeVector.Length; i++)
-			{
-				result[i] = first[i] != second[i] ? 1 : 0;
-			}
-
-			return result;
-		}
-
-		public static Tensor operator >(Tensor first, Tensor second)
-		{
-			var result = new Tensor(first.DopeVector.Shape);
-
-			for (int i = 0; i < first.DopeVector.Length; i++)
-			{
-				result[i] = first[i] > second[i] ? 1 : 0;
-			}
-
-			return result;
-		}
-
-		public static Tensor operator >=(Tensor first, Tensor second)
-		{
-			var result = new Tensor(first.DopeVector.Shape);
-
-			for (int i = 0; i < first.DopeVector.Length; i++)
-			{
-				result[i] = first[i] >= second[i] ? 1 : 0;
-			}
-
-			return result;
-		}
-
-		public static Tensor operator <(Tensor first, Tensor second)
-		{
-			var result = new Tensor(first.DopeVector.Shape);
-
-			for (int i = 0; i < first.values.Length; i++)
-			{
-				result[i] = first[i] < second[i] ? 1 : 0;
-			}
-
-			return result;
-		}
-
-		public static Tensor operator <=(Tensor first, Tensor second)
-		{
-			var result = new Tensor(first.DopeVector.Shape);
-
-			for (int i = 0; i < first.DopeVector.Length; i++)
-			{
-				result[i] = first[i] >= second[i] ? 1 : 0;
-			}
-
-			return result;
+				$"Inputs have different Ranks:{first.DopeVector.Rank}|{second.DopeVector.Rank}.");
 		}
 
 		private int GetOffset(params int[] indices)
@@ -175,12 +67,6 @@ namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
 
 			return index;
 		}
-
-		// public Tensor Transpose()
-		// {
-		// 	var operations = new Operations();
-		// 	return operations.Transpose(this);
-		// }
 	}
 
 	// public class Operations
