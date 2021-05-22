@@ -14,7 +14,7 @@ namespace ArtificialIntelligenceTest
 			var sut = new Tensor(dimention, dimention, dimention);
 
 			//Act
-			var result = sut.values.DopeVector.Length;
+			var result = sut.DopeVector.Length;
 
 			//Assert
 			Assert.Equal(dimention * dimention * dimention, result);
@@ -30,7 +30,7 @@ namespace ArtificialIntelligenceTest
 			var sut = new Tensor(dimention1, dimention2, dimention3);
 
 			//Act
-			var result = sut.values.DopeVector.Length;
+			var result = sut.DopeVector.Length;
 
 			//Assert
 			Assert.Equal(dimention1 * dimention2 * dimention3, result);
