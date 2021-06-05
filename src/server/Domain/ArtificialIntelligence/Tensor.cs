@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
+namespace Hermes.Domain.ArtificialIntelligence
 {
 	public class Tensor
 	{

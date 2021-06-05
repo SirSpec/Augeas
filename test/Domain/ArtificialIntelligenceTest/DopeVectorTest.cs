@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
+using Hermes.Domain.ArtificialIntelligence;
 using Xunit;
 
 namespace ArtificialIntelligenceTest

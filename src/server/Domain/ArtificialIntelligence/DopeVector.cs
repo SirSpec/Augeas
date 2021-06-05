@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
+namespace Hermes.Domain.ArtificialIntelligence
 {
 	// https://en.wikipedia.org/wiki/Dope_vector
 	public record DopeVector
