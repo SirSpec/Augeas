@@ -1,4 +1,4 @@
-# AI-powered vehicle
+# Simulation of AI-powered vacuum cleaners run by a FNN optimized by the Genetic Algorithm
 ```
     __  ____________  __  ______________
    / / / / ____/ __ \/  |/  / ____/ ___/
@@ -6,7 +6,3 @@
  / __  / /___/ _, _/ /  / / /___ ___/ /
 /_/ /_/_____/_/ |_/_/  /_/_____//____/
 ```
-
-# Planed features
-- Neuroevolution
-- https://en.wikipedia.org/wiki/Simulated_annealing
