@@ -31,52 +31,6 @@ namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
 			this.terminationAlgorithm = terminationAlgorithm;
 		}
 
-		// START
-		// Generate the initial population
-		// Compute fitness
-		// REPEAT
-		//     Selection
-		//     Crossover
-		//     Mutation
-		//     Compute fitness
-		// UNTIL population has converged
-		// STOP
-		// public Phenotype<TAllele> Evolve(Population<TAllele> population2)
-		// {
-		//     //initialize population
-		//     var population = population2; //new Population<TAllele>(0, new Phenotype<TAllele>(fitnessFunction, new Genotype<TAllele>(), 0));
-
-		//     //find fitness of population
-		//     foreach (var phenotype in population.Phenotypes)
-		//     {
-		//         phenotype.Fitness = fitnessFunction.GetFitness(phenotype);
-		//     }
-
-		//     while (terminationAlgorithm.TerminationConditionReached(population) is false)
-		//     {
-		//         var parents = selectionAlgorithm.Select(population.Phenotypes);
-
-		//         var offsprings = new List<Phenotype<TAllele>>();
-
-		//         foreach (var pair in parents)
-		//         {
-		//             var offspring = crossoverOperator.Crossover(parents);
-		//             offspring = offspring.Select(mutationOperator.Mutate);
-		//             offsprings.AddRange(offspring);
-		//         }
-
-		//         foreach (var phenotype in offsprings)
-		//         {
-		//             phenotype.Fitness = fitnessFunction.GetFitness(phenotype);
-		//         }
-
-		//         var survivors = selectionAlgorithm.Select(parents).Concat(selectionAlgorithm.Select(offsprings));
-		//         population = population.CreateNextGeneration(survivors.ToArray());
-		//     }
-
-		//     return population.Fittest;
-		// }
-
 		public Population<TAllele> GenerateNewPopulation(Population<TAllele> population)
 		{
 			var parents = selectionAlgorithm.Select(population.Phenotypes);
