@@ -1,7 +1,7 @@
 {
-	"name": "hermes",
+	"name": "augeas",
 	"version": "1.0.0",
-	"description": "Client Application of Hermes project",
+	"description": "Client Application of augeas project",
 	"author": "Spec",
 	"private": true,
 	"scripts": {

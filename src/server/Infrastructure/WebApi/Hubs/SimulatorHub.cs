@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Hermes.Infrastructure.WebApi
+namespace Augeas.Infrastructure.WebApi
 {
 	public class SimulatorHub : Hub
 	{

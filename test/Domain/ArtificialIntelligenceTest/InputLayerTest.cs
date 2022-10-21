@@ -1,5 +1,5 @@
 using System;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks;
 using Xunit;
 
 namespace ArtificialIntelligenceTest

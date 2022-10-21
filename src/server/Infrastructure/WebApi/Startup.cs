@@ -1,4 +1,4 @@
-using Hermes.Infrastructure.WebApi.Configurations;
+using Augeas.Infrastructure.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace Hermes.Infrastructure.WebApi
+namespace Augeas.Infrastructure.WebApi
 {
 	public class Startup
 	{
@@ -48,7 +48,7 @@ namespace Hermes.Infrastructure.WebApi
 			{
 				endpoints.MapGet("/", async context =>
 				{
-					await context.Response.WriteAsync("Hermes");
+					await context.Response.WriteAsync("Augeas");
 				});
 
 				endpoints.MapHub<SimulatorHub>("/hub");

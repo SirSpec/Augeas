@@ -1,7 +1,7 @@
 using System;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
 using Xunit;
 using System.Linq;
 

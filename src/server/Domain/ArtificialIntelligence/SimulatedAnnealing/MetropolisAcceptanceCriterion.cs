@@ -1,6 +1,6 @@
 using System;
 
-namespace Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing
+namespace Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing
 {
 	// https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm
 	public class MetropolisAcceptanceCriterion : IAcceptanceProbabilityFunction

@@ -1,6 +1,6 @@
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
 	// https://en.wikipedia.org/wiki/Fitness_function
 	public interface IFitnessFunction

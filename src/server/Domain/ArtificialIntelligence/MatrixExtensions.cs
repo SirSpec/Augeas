@@ -1,6 +1,6 @@
 using System;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
+namespace Augeas.Domain.ArtificialIntelligence.NeuralNetworks
 {
 	public static class MatrixExtensions
 	{

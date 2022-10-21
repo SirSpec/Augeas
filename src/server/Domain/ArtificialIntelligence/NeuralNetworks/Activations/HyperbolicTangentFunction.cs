@@ -1,6 +1,6 @@
 using System;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations
+namespace Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Activations
 {
 	public class HyperbolicTangentFunction : IActivationFunction
 	{

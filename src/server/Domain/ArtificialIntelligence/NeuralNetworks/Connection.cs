@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
+namespace Augeas.Domain.ArtificialIntelligence.NeuralNetworks
 {
 	public class Connection
 	{

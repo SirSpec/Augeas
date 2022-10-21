@@ -1,4 +1,4 @@
-﻿namespace Hermes.Domain.ArtificialIntelligence
+﻿namespace Augeas.Domain.ArtificialIntelligence
 {
 	public interface IRandomNumberEngine
 	{

@@ -1,6 +1,6 @@
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation
 {
 	// https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
 	public interface IMutationOperator<TAllele>

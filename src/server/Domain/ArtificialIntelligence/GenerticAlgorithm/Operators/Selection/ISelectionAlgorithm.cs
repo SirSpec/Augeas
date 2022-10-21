@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection
 {
 	// https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
 	public interface ISelectionAlgorithm

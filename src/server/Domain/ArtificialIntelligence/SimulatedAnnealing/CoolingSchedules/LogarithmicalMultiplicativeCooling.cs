@@ -1,6 +1,6 @@
 using System;
 
-namespace Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules
+namespace Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules
 {
 	// T_k = T_0 / (1 + aLog(1 + k))
 	public class LogarithmicalMultiplicativeCooling : ICoolingSchedule

@@ -1,6 +1,6 @@
 using System;
 
-namespace Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules
+namespace Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules
 {
 	// T_k = T_n + (T_0 - T_n) * ((n - k) / n)^2
 	public class QuadraticAdditiveCooling : ICoolingSchedule

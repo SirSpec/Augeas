@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders
 {
 	public class RandomDoubleAlleleFactory : IAlleleFactory<double>
 	{

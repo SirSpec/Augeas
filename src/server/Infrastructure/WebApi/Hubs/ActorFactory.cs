@@ -1,6 +1,6 @@
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Builders;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Builders;
 
-namespace Hermes.Infrastructure.WebApi
+namespace Augeas.Infrastructure.WebApi
 {
 	public class ActorFactory
 	{

@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence;
+using Augeas.Domain.ArtificialIntelligence;
 using Xunit;
 
 namespace ArtificialIntelligenceTest

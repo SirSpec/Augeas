@@ -1,8 +1,8 @@
 using System;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation
 {
 	public class UniformMutation<TAllele> : IMutationOperator<TAllele>
 	{

@@ -1,4 +1,4 @@
-namespace Hermes.Infrastructure.WebApi.Configurations
+namespace Augeas.Infrastructure.WebApi.Configurations
 {
 	public class SimulatorHubOptions
 	{

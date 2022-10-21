@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders
 {
 	public class PhenotypeFactory<TAllele>
 	{

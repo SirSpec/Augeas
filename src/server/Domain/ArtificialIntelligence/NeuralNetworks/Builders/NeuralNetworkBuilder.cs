@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Activations;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Propagations;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Builders
+namespace Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Builders
 {
 	public class NeuralNetworkBuilder
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
 {
 	// https://en.wikipedia.org/wiki/Chromosome_(genetic_algorithm)
 	public class Genotype<TAllele>

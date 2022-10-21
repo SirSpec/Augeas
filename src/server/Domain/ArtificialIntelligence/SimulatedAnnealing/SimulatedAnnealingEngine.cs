@@ -1,6 +1,6 @@
-using Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules;
+using Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules;
 
-namespace Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing
+namespace Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing
 {
 	// https://en.wikipedia.org/wiki/Simulated_annealing
 	public class SimulatedAnnealingEngine

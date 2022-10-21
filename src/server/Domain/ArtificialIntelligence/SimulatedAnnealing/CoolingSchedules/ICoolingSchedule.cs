@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules
+namespace Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing.CoolingSchedules
 {
 	// https://en.wikipedia.org/wiki/Simulated_annealing
 	// Temperature should be monotonically decreasing function

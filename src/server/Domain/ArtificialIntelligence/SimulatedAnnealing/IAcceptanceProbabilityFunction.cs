@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence.SimulatedAnnealing
+namespace Augeas.Domain.ArtificialIntelligence.SimulatedAnnealing
 {
 	public interface IAcceptanceProbabilityFunction
 	{

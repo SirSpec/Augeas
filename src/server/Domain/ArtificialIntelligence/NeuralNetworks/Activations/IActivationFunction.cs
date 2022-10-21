@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks.Activations
+namespace Augeas.Domain.ArtificialIntelligence.NeuralNetworks.Activations
 {
 	public interface IActivationFunction
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
 {
 	public class Population<TAllele>
 	{

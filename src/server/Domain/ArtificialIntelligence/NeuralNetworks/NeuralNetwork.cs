@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hermes.Domain.ArtificialIntelligence.NeuralNetworks
+namespace Augeas.Domain.ArtificialIntelligence.NeuralNetworks
 {
 	public class NeuralNetwork
 	{

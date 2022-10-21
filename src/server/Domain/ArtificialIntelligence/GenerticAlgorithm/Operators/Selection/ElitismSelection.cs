@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection
 {
 	public class ElitismSelection : ISelectionAlgorithm
 	{

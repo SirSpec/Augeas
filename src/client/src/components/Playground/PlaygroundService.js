@@ -57,7 +57,7 @@ export default class PlaygroundService {
 		}
 
 		connection.start()
-			.then(() => console.log("Hermes client connection started."))
+			.then(() => console.log("Augeas client connection started."))
 			.catch(error => console.log(error));
 
 		var graphics;

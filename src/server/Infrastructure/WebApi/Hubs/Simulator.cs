@@ -1,14 +1,14 @@
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Crossover;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Termination;
+using Augeas.Domain.ArtificialIntelligence;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Builders;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Crossover;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Termination;
 
-namespace Hermes.Infrastructure.WebApi
+namespace Augeas.Infrastructure.WebApi
 {
 	public class Simulator
 	{

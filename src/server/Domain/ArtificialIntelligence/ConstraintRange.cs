@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hermes.Domain.ArtificialIntelligence
+namespace Augeas.Domain.ArtificialIntelligence
 {
 	public readonly struct ConstraintRange<TValue> : IEquatable<ConstraintRange<TValue>>
 		where TValue : IComparable<TValue>, IEquatable<TValue>

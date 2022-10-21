@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Crossover;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Termination;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Crossover;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Mutation;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Selection;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.Operators.Termination;
 
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm
 {
 	// https://en.wikipedia.org/wiki/Genetic_algorithm
 	public class GenerticAlgorithmEngine<TAllele>

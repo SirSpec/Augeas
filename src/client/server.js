@@ -13,5 +13,5 @@ app.use(
 );
 
 app.listen(3000, function () {
-	console.log('Hermes client app listening on port 3000.');
+	console.log('Augeas client app listening on port 3000.');
 });

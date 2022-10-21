@@ -1,4 +1,4 @@
-namespace Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
+namespace Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures
 {
 	public class Gene<TAllele>
 	{

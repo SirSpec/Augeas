@@ -1,8 +1,8 @@
 using System.Linq;
-using Hermes.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
-using Hermes.Domain.ArtificialIntelligence.NeuralNetworks;
+using Augeas.Domain.ArtificialIntelligence.GenerticAlgorithm.DataStructures;
+using Augeas.Domain.ArtificialIntelligence.NeuralNetworks;
 
-namespace Hermes.Infrastructure.WebApi
+namespace Augeas.Infrastructure.WebApi
 {
 	public class Actor
 	{
